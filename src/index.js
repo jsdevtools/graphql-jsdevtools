@@ -46,6 +46,7 @@ const server = new ApolloServer({
     apiKey: process.env.ENGINE_API_KEY,
     ...internalEngineDemo,
   },
+  introspection: true,
 });
 
 // Start our server if we're not in a test env.
