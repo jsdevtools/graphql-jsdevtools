@@ -20,7 +20,7 @@ jobs:
 
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            cd npx apollo service:push
+            npx apollo service:push
           fi
 
 workflows:
