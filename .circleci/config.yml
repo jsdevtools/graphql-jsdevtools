@@ -1,0 +1,30 @@
+version: 2
+
+jobs:
+  Apollo Server:
+    docker:
+      - image: circleci/node:8
+
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm test
+
+      - run:
+          name: Starting server
+          command: npm run start:ci
+          background: true
+
+      - run: sleep 5
+      - run: npx apollo service:check
+
+      - run: |
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            cd npx apollo service:push
+          fi
+
+workflows:
+  version: 2
+  Build and Test:
+    jobs:
+      - Apollo Server
