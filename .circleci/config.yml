@@ -4,7 +4,6 @@ jobs:
   Apollo Server:
     docker:
       - image: circleci/node:8
-
     steps:
       - checkout
       - run: npm ci
@@ -19,19 +18,18 @@ jobs:
             ./cc-test-reporter before-build
             npm test
             ./cc-test-reporter after-build --exit-code $?
-
       - run:
           name: Starting server
           command: npm run start:ci
           background: true
-
       - run: sleep 5
       - run: npx apollo service:check
-
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
             npx apollo service:push
           fi
+      - deploy:
+          command: bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
 
 workflows:
   version: 2
