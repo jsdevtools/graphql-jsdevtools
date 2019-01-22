@@ -28,11 +28,20 @@ jobs:
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
             npx apollo service:push
           fi
-      - deploy:
-          command: bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
+
+  CoPilot:
+    build:
+      docker:
+        - image: circleci/openjdk:8-jdk
+      steps:
+        - checkout
+        - run: npm ci
+        - deploy:
+            command: bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
 
 workflows:
   version: 2
   Build and Test:
     jobs:
       - Apollo Server
+      - CoPilot
