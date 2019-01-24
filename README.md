@@ -1,5 +1,6 @@
 # graphql-jsdevtools
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a4d489b427f7450b8a5ccf163fdfa7a2)](https://app.codacy.com/app/jsdevtools/graphql-jsdevtools?utm_source=github.com&utm_medium=referral&utm_content=jsdevtools/graphql-jsdevtools&utm_campaign=Badge_Grade_Dashboard)
 [![Greenkeeper badge](https://badges.greenkeeper.io/jsdevtools/graphql-jsdevtools.svg)](https://greenkeeper.io/)
 
 [![codecov](https://codecov.io/gh/jsdevtools/graphql-jsdevtools/branch/develop/graph/badge.svg)](https://codecov.io/gh/jsdevtools/graphql-jsdevtools)
