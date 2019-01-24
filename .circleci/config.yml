@@ -9,35 +9,28 @@ jobs:
       - run:
           name: Update ENGINE_API_KEY at Runtime
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              echo 'export ENGINE_API_KEY=$DEV_ENGINE_API_KEY' >> $BASH_ENV
-            fi
-            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
-              echo 'export ENGINE_API_KEY=$STAGE_ENGINE_API_KEY' >> $BASH_ENV
-            fi
             if [ "${CIRCLE_BRANCH}" == "prod" ]; then
               echo 'export ENGINE_API_KEY=$PROD_ENGINE_API_KEY' >> $BASH_ENV
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              echo 'export ENGINE_API_KEY=$STAGE_ENGINE_API_KEY' >> $BASH_ENV
+            else
+              echo 'export ENGINE_API_KEY=$DEV_ENGINE_API_KEY' >> $BASH_ENV
             fi
             source $BASH_ENV
       - run: npm ci
       - run:
-          name: Setup Code Climate test-reporter
+          name: Run Test and Coverage
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
               chmod +x ./cc-test-reporter
-            fi
-      - run: # run tests
-          name: Run Test and Coverage
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               ./cc-test-reporter before-build --debug
-            fi
-            npm test
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm test
               cat ./coverage/lcov.info | codacy-coverage
               node node_modules/codecov/bin/codecov
               ./cc-test-reporter after-build --debug --exit-code $?
+            else
+              npm test
             fi
       - run:
           name: Starting server
@@ -46,8 +39,6 @@ jobs:
       - run: sleep 10
       - run: npx apollo server:check
       - run: npx apollo server:push
-      - run: |
-          npx apollo service:push
 
   CoPilot:
     docker:
@@ -68,11 +59,9 @@ jobs:
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/dev-$HEROKU_APP_NAME.git master
-          fi
-          if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+          elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/staging-$HEROKU_APP_NAME.git staging:master
-          fi
-          if [ "${CIRCLE_BRANCH}" == "prod" ]; then
+          elif [ "${CIRCLE_BRANCH}" == "prod" ]; then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/prod-$HEROKU_APP_NAME.git prod:master
           fi
 
