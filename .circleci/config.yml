@@ -26,7 +26,7 @@ jobs:
               chmod +x ./cc-test-reporter
               ./cc-test-reporter before-build --debug
               npm test
-              cat ./coverage/lcov.info | codacy-coverage
+              cat ./coverage/lcov.info | node node_modules/codacy-coverage/bin/codacy-coverage.js
               node node_modules/codecov/bin/codecov
               ./cc-test-reporter after-build --debug --exit-code $?
             else
