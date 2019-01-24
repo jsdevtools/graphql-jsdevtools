@@ -30,13 +30,14 @@ jobs:
           fi
 
   CoPilot:
-    docker:
-      - image: circleci/openjdk:8-jdk
-    steps:
-      - checkout
-      - run: npm ci
-      - deploy:
-          command: bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
+    build:
+      docker:
+        - image: circleci/openjdk:8-jdk
+      steps:
+        - checkout
+        - run: npm ci
+        - deploy:
+            command: bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
 
 workflows:
   version: 2
