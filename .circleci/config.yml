@@ -37,20 +37,9 @@ jobs:
       - deploy:
           command: bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
 
-  Heroku Deploy:
-    docker:
-      - image: buildpack-deps:trusty
-    steps:
-      - checkout
-      - run: |
-          if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git develop
-          fi
-
 workflows:
   version: 2
   Build and Test:
     jobs:
       - Apollo Server
       - CoPilot
-      - Heroku Deploy
