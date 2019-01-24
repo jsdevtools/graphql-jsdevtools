@@ -4,33 +4,65 @@ jobs:
   Apollo Server:
     docker:
       - image: circleci/node:8
-
     steps:
       - checkout
+      - run:
+          name: Update ENGINE_API_KEY at Runtime
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "prod" ]; then
+              echo 'export ENGINE_API_KEY=$PROD_ENGINE_API_KEY' >> $BASH_ENV
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              echo 'export ENGINE_API_KEY=$STAGE_ENGINE_API_KEY' >> $BASH_ENV
+            else
+              echo 'export ENGINE_API_KEY=$DEV_ENGINE_API_KEY' >> $BASH_ENV
+            fi
+            source $BASH_ENV
       - run: npm ci
       - run:
-          name: Setup Code Climate test-reporter
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-      - run: # run tests
           name: Run Test and Coverage
           command: |
-            ./cc-test-reporter before-build
-            npm test
-            ./cc-test-reporter after-build --exit-code $?
-
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+              chmod +x ./cc-test-reporter
+              ./cc-test-reporter before-build --debug
+              npm test
+              cat ./coverage/lcov.info | node node_modules/codacy-coverage/bin/codacy-coverage.js
+              node node_modules/codecov/bin/codecov
+              ./cc-test-reporter after-build --debug --exit-code $?
+            else
+              npm test
+            fi
       - run:
           name: Starting server
           command: npm run start:ci
           background: true
+      - run: sleep 10
+      - run: npx apollo server:check
+      - run: npx apollo server:push
 
-      - run: sleep 5
-      - run: npx apollo service:check
+  CoPilot:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - run:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
+            fi
 
+  Heroku Deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            npx apollo service:push
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/dev-$HEROKU_APP_NAME.git master
+          elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/staging-$HEROKU_APP_NAME.git staging:master
+          elif [ "${CIRCLE_BRANCH}" == "prod" ]; then
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/prod-$HEROKU_APP_NAME.git prod:master
           fi
 
 workflows:
@@ -38,3 +70,9 @@ workflows:
   Build and Test:
     jobs:
       - Apollo Server
+      - CoPilot:
+          requires:
+            - Apollo Server
+      - Heroku Deploy:
+          requires:
+            - CoPilot
