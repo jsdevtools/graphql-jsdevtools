@@ -23,7 +23,7 @@ jobs:
             fi
             npm test
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              codecov
+              node node_modules\codecov\bin\codecov
               ./cc-test-reporter after-build --debug --exit-code $?
             fi
       - run:
