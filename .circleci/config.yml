@@ -4,9 +4,21 @@ jobs:
   Apollo Server:
     docker:
       - image: circleci/node:8
-
     steps:
       - checkout
+      - run:
+          name: Update ENGINE_API_KEY at Runtime
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo 'export ENGINE_API_KEY=$DEV_ENGINE_API_KEY' >> $BASH_ENV
+            fi
+            if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              echo 'export ENGINE_API_KEY=$STAGE_ENGINE_API_KEY' >> $BASH_ENV
+            fi
+            if [ "${CIRCLE_BRANCH}" == "prod" ]; then
+              echo 'export ENGINE_API_KEY=$PROD_ENGINE_API_KEY' >> $BASH_ENV
+            fi
+            source $BASH_ENV
       - run: npm ci
       - run:
           name: Setup Code Climate test-reporter
@@ -70,7 +82,7 @@ workflows:
       - Apollo Server
       - CoPilot:
           requires:
-            - Apollo Client
+            - Apollo Server
       - Heroku Deploy:
           requires:
             - CoPilot
