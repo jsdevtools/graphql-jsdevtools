@@ -35,6 +35,7 @@ jobs:
             fi
             npm test
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              cat ./coverage/lcov.info | codacy-coverage
               node node_modules/codecov/bin/codecov
               ./cc-test-reporter after-build --debug --exit-code $?
             fi
@@ -43,8 +44,8 @@ jobs:
           command: npm run start:ci
           background: true
       - run: sleep 10
-      - run: npx apollo client:check
-      - run: npx apollo client:push
+      - run: npx apollo server:check
+      - run: npx apollo server:push
       - run: |
           npx apollo service:push
 

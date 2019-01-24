@@ -15,6 +15,7 @@
     "apollo-datasource-rest": "^0.2.1",
     "apollo-server": "2.3.1",
     "apollo-server-testing": "2.3.1",
+    "codacy-coverage": "^3.4.0",
     "codecov": "^3.1.0",
     "dotenv": "^6.1.0",
     "graphql": "^14.0.2",
