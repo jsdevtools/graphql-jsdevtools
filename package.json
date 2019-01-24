@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest && codecov",
+    "test": "jest",
     "start": "nodemon src/index.js",
     "start:ci": "node src/index.js"
   },

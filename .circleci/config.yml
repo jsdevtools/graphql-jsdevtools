@@ -11,26 +11,56 @@ jobs:
       - run:
           name: Setup Code Climate test-reporter
           command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+              chmod +x ./cc-test-reporter
+            fi
       - run: # run tests
           name: Run Test and Coverage
           command: |
-            ./cc-test-reporter before-build
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              ./cc-test-reporter before-build --debug
+            fi
             npm test
-            ./cc-test-reporter after-build --exit-code $?
-
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              codecov
+              ./cc-test-reporter after-build --debug --exit-code $?
+            fi
       - run:
           name: Starting server
           command: npm run start:ci
           background: true
+      - run: sleep 10
+      - run: npx apollo client:check
+      - run: npx apollo client:push
+      - run: |
+          npx apollo service:push
 
-      - run: sleep 5
-      - run: npx apollo service:check
+  CoPilot:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - run:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              bash <(curl -s https://copilot.blackducksoftware.com/ci/circle2/scripts/upload)
+            fi
 
+  Heroku Deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
       - run: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            npx apollo service:push
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/dev-$HEROKU_APP_NAME.git master
+          fi
+          if [ "${CIRCLE_BRANCH}" == "staging" ]; then
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/staging-$HEROKU_APP_NAME.git staging:master
+          fi
+          if [ "${CIRCLE_BRANCH}" == "prod" ]; then
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/prod-$HEROKU_APP_NAME.git prod:master
           fi
 
 workflows:
@@ -38,3 +68,9 @@ workflows:
   Build and Test:
     jobs:
       - Apollo Server
+      - CoPilot:
+          requires:
+            - Apollo Client
+      - Heroku Deploy:
+          requires:
+            - CoPilot
