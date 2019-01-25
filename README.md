@@ -26,7 +26,7 @@
 
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/jsdevtools/graphql-jsdevtools.svg?columns=all)](https://waffle.io/jsdevtools/graphql-jsdevtools)
 
-[![Commit Activity](https://img.shields.io/github/commit-activity/y/jsdevtools/graphql-jsdevtools.svg)](https://www.github.com/jsdevtools/graphql-jsdevtools)
+[![Commit Activity](https://img.shields.io/github/commit-activity/4w/jsdevtools/graphql-jsdevtools.svg)](https://www.github.com/jsdevtools/graphql-jsdevtools)
 
 [![GitHub contributors](https://img.shields.io/github/contributors/jsdevtools/graphql-jsdevtools.svg)](https://www.github.com/jsdevtools/graphql-jsdevtools)
 
