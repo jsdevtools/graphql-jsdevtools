@@ -4,7 +4,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/88df7784430a2cb10832/maintainability)](https://codeclimate.com/github/jsdevtools/graphql-jsdevtools/maintainability)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/88df7784430a2cb10832/maintainability)](https://img.shields.io/codeclimate/maintainability-percentage/jsdevtools/graphql-jsdevtools.svg)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability-percentage/jsdevtools/graphql-jsdevtools.svg)](https://api.codeclimate.com/v1/badges/88df7784430a2cb10832/maintainability)
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/88df7784430a2cb10832/test_coverage)](https://codeclimate.com/github/jsdevtools/graphql-jsdevtools/test_coverage)
 
