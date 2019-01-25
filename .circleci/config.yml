@@ -48,7 +48,7 @@ jobs:
           name: Pust to apollo engine
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
-              npx apollo server:push
+              npx apollo server:push --key=$ENGINE_API_KEY --localSchemaFile="src/schema.graphql"
             fi
 
   CoPilot:
