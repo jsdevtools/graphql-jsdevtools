@@ -26,4 +26,12 @@
 
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/jsdevtools/graphql-jsdevtools.svg?columns=all)](https://waffle.io/jsdevtools/graphql-jsdevtools)
 
+[![Commit Activity](https://www.github.com/jsdevtools/graphql-jsdevtools)](https://img.shields.io/github/commit-activity/m/jsdevtools/graphql-jsdevtools.svg)
+
+[![GitHub contributors](https://www.github.com/jsdevtools/graphql-jsdevtools)](https://img.shields.io/github/contributors/jsdevtools/graphql-jsdevtools.svg)
+
+[![GitHub last commit](https://www.github.com/jsdevtools/graphql-jsdevtools)](https://img.shields.io/github/last-commit/jsdevtools/graphql-jsdevtools.svg)
+
+[![GitHub Release Date](https://www.github.com/jsdevtools/graphql-jsdevtools)](https://img.shields.io/github/release-date/jsdevtools/graphql.svg)
+
 ## Server
