@@ -34,15 +34,22 @@ jobs:
               npm test
             fi
       - run:
-          name: Push to apollo engine
+          name: Starting server
+          command: npm run start:ci
+          background: true
+      - run: sleep 10
+      - run:
+          name: Run apollo engine checks
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
               npx apollo service:check
-              npm run start:ci
-              sleep 5
+            fi
+      - run:
+          name: Pust to apollo engine
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
               npx apollo service:push --key=$ENGINE_API_KEY --localSchemaFile="src/schema.graphql"
             fi
-          background: true
 
   CoPilot:
     docker:
