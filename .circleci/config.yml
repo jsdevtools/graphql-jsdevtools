@@ -71,7 +71,7 @@ jobs:
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/dev-$HEROKU_APP_NAME.git master
           elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
-            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/staging-$HEROKU_APP_NAME.git staging:master
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/stage-$HEROKU_APP_NAME.git staging:master
           elif [ "${CIRCLE_BRANCH}" == "prod" ]; then
             git push https://heroku:$HEROKU_API_KEY@git.heroku.com/prod-$HEROKU_APP_NAME.git prod:master
           fi
