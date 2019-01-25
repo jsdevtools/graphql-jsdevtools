@@ -26,8 +26,9 @@ jobs:
               chmod +x ./cc-test-reporter
               ./cc-test-reporter before-build --debug
               npm test
-              cat ./coverage/lcov.info | node node_modules/codacy-coverage/bin/codacy-coverage.js
               node node_modules/codecov/bin/codecov
+              cat ./coverage/lcov.info | node node_modules/codacy-coverage/bin/codacy-coverage.js
+              cat ./coverage/lcov.info | node node_modules/coveralls/bin/coveralls.js
               ./cc-test-reporter after-build --debug --exit-code $?
             else
               npm test
@@ -37,8 +38,18 @@ jobs:
           command: npm run start:ci
           background: true
       - run: sleep 10
-      - run: npx apollo server:check
-      - run: npx apollo server:push
+      - run:
+          name: Run apollo engine checks
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
+              npx apollo server:check
+            fi
+      - run:
+          name: Pust to apollo engine
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
+              npx apollo server:push
+            fi
 
   CoPilot:
     docker:
