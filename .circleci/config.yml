@@ -31,13 +31,13 @@ jobs:
           name: Run apollo engine checks
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
-              npx apollo schema:check --endpoint="http://localhost:4000/graphql --tag=${CIRCLE_BRANCH}
+              npx apollo schema:check --endpoint="http://localhost:4000/graphql" --tag=${CIRCLE_BRANCH}
             fi
       - run:
           name: Pust to apollo engine
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
-              npx apollo schema:push --endpoint="http://localhost:4000/graphql --tag=${CIRCLE_BRANCH}
+              npx apollo schema:push --endpoint="http://localhost:4000/graphql" --tag=${CIRCLE_BRANCH}
             fi
 
   CoPilot:
