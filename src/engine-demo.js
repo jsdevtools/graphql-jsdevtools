@@ -1,5 +1,5 @@
 module.exports = {
-  schemaTag: 'current',
+  schemaTag: process.env.ENGINE_TAG,
   generateClientInfo: ({ request }) => {
     if (!request || !request.http) return {};
     const clientName = request.http.headers.get('client-name');
