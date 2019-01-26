@@ -47,6 +47,7 @@ const server = new ApolloServer({
     ...internalEngineDemo,
   },
   introspection: true,
+  playground: true
 });
 
 // Start our server if we're not in a test env.
