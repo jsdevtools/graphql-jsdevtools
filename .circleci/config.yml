@@ -26,13 +26,12 @@ jobs:
           name: Starting server
           command: npm run start:ci
           background: true
-      - run: sleep 10
+      - run: sleep 5
       - run:
           name: Run apollo engine checks
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ] || [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
-              # npx apollo service:check --key=${ENGINE_API_KEY} --tag=${CIRCLE_BRANCH}
-              echo "skip check"
+              npx apollo service:check --tag=${CIRCLE_BRANCH}
             fi
       - run:
           name: Pust to apollo engine
