@@ -32,9 +32,11 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               # npx apollo schema:check
+              echo "skipping"
             fi
             if [ "${CIRCLE_BRANCH}" == "staging" ] || [ "${CIRCLE_BRANCH}" == "prod" ]; then
               # npx apollo schema:check --tag=${CIRCLE_BRANCH}
+              echo "skipping"
             fi
       - run:
           name: Push to apollo engine
