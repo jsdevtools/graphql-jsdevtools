@@ -48,17 +48,15 @@ describe('Server - e2e', () => {
     const res = await toPromise(
       graphql({
         query: LAUNCH_LIST_QUERY,
-        variables: { pageSize: 1, after: '1517949900' },
-      }),
+        variables: { pageSize: 1, after: '1517949900' }
+      })
     );
 
     expect(res).toMatchSnapshot();
   });
 
   it('gets a single launch', async () => {
-    const res = await toPromise(
-      graphql({ query: GET_LAUNCH, variables: { id: 30 } }),
-    );
+    const res = await toPromise(graphql({ query: GET_LAUNCH, variables: { id: 30 } }));
 
     expect(res).toMatchSnapshot();
   });
