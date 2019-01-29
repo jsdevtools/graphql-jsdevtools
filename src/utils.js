@@ -29,7 +29,7 @@ module.exports.paginateResults = ({
 };
 
 module.exports.createStore = () => {
-  const Op = SQL.Op;
+  const { Op } = SQL;
   const operatorsAliases = {
     $in: Op.in
   };
