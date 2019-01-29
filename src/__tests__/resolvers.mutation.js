@@ -5,14 +5,14 @@ const mockContext = {
     userAPI: {
       bookTrips: jest.fn(),
       cancelTrip: jest.fn(),
-      findOrCreateUser: jest.fn(),
+      findOrCreateUser: jest.fn()
     },
     launchAPI: {
       getLaunchesByIds: jest.fn(),
-      getLaunchById: jest.fn(),
-    },
+      getLaunchById: jest.fn()
+    }
   },
-  user: { id: 1, email: 'a@a.a' },
+  user: { id: 1, email: 'a@a.a' }
 };
 
 describe('[Mutation.bookTrips]', () => {
@@ -24,15 +24,11 @@ describe('[Mutation.bookTrips]', () => {
     getLaunchesByIds.mockReturnValueOnce([{ id: 999, cursor: 'foo' }]);
 
     // check the resolver response
-    const res = await resolvers.Mutation.bookTrips(
-      null,
-      { launchIds: [123] },
-      mockContext,
-    );
+    const res = await resolvers.Mutation.bookTrips(null, { launchIds: [123] }, mockContext);
     expect(res).toEqual({
       launches: [{ cursor: 'foo', id: 999 }],
       message: 'trips booked successfully',
-      success: true,
+      success: true
     });
 
     // check if the dataSource was called with correct args
@@ -43,11 +39,7 @@ describe('[Mutation.bookTrips]', () => {
     bookTrips.mockReturnValueOnce([]);
 
     // check the resolver response
-    const res = await resolvers.Mutation.bookTrips(
-      null,
-      { launchIds: [123] },
-      mockContext,
-    );
+    const res = await resolvers.Mutation.bookTrips(null, { launchIds: [123] }, mockContext);
 
     expect(res.message).toBeDefined();
     expect(res.success).toBeFalsy();
@@ -63,15 +55,11 @@ describe('[Mutation.cancelTrip]', () => {
     getLaunchById.mockReturnValueOnce({ id: 999, cursor: 'foo' });
 
     // check the resolver response
-    const res = await resolvers.Mutation.cancelTrip(
-      null,
-      { launchId: 123 },
-      mockContext,
-    );
+    const res = await resolvers.Mutation.cancelTrip(null, { launchId: 123 }, mockContext);
     expect(res).toEqual({
       success: true,
       message: 'trip cancelled',
-      launches: [{ id: 999, cursor: 'foo' }],
+      launches: [{ id: 999, cursor: 'foo' }]
     });
 
     // check if the dataSource was called with correct args
@@ -82,11 +70,7 @@ describe('[Mutation.cancelTrip]', () => {
     cancelTrip.mockReturnValueOnce(false);
 
     // check the resolver response
-    const res = await resolvers.Mutation.cancelTrip(
-      null,
-      { launchId: 123 },
-      mockContext,
-    );
+    const res = await resolvers.Mutation.cancelTrip(null, { launchId: 123 }, mockContext);
     expect(res.message).toBeDefined();
     expect(res.success).toBeFalsy();
   });
@@ -98,7 +82,7 @@ describe('[Mutation.login]', () => {
   it('returns base64 encoded email if successful', async () => {
     const args = { email: 'a@a.a' };
     findOrCreateUser.mockReturnValueOnce(true);
-    const base64Email = new Buffer(mockContext.user.email).toString('base64');
+    // const base64Email = Buffer.from(mockContext.user.email).toString('base64');
 
     // check the resolver response
     const res = await resolvers.Mutation.login(null, args, mockContext);
