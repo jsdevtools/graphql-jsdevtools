@@ -1,6 +1,6 @@
 // import our production apollo-server instance
-const { server } = require('../');
 const gql = require('graphql-tag');
+const { server } = require('../');
 
 const { startTestServer, toPromise } = require('./__utils');
 
@@ -34,11 +34,14 @@ const GET_LAUNCH = gql`
 `;
 
 describe('Server - e2e', () => {
-  let stop, graphql;
+  let stop;
+  let graphql;
 
   beforeEach(async () => {
     const testServer = await startTestServer(server);
+    // eslint-disable-next-line prefer-destructuring
     stop = testServer.stop;
+    // eslint-disable-next-line prefer-destructuring
     graphql = testServer.graphql;
   });
 
