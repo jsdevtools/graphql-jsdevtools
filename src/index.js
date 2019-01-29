@@ -18,7 +18,7 @@ const store = createStore();
 // set up any dataSources our resolvers need
 const dataSources = () => ({
   launchAPI: new LaunchAPI(),
-  userAPI: new UserAPI({ store }),
+  userAPI: new UserAPI({ store })
 });
 
 // the function that sets up the global context for each resolver, using the req
@@ -44,7 +44,7 @@ const server = new ApolloServer({
   context,
   engine: {
     apiKey: process.env.ENGINE_API_KEY,
-    ...internalEngineDemo,
+    ...internalEngineDemo
   },
   introspection: true,
   playground: true
@@ -67,5 +67,5 @@ module.exports = {
   LaunchAPI,
   UserAPI,
   store,
-  server,
+  server
 };

@@ -7,6 +7,7 @@ class LaunchAPI extends RESTDataSource {
   }
 
   // leaving this inside the class to make the class easier to test
+  // eslint-disable-next-line class-methods-use-this
   launchReducer(launch) {
     return {
       id: launch.flight_number || 0,
@@ -15,13 +16,13 @@ class LaunchAPI extends RESTDataSource {
       mission: {
         name: launch.mission_name,
         missionPatchSmall: launch.links.mission_patch_small,
-        missionPatchLarge: launch.links.mission_patch,
+        missionPatchLarge: launch.links.mission_patch
       },
       rocket: {
         id: launch.rocket.rocket_id,
         name: launch.rocket.rocket_name,
-        type: launch.rocket.rocket_type,
-      },
+        type: launch.rocket.rocket_type
+      }
     };
   }
 
@@ -38,9 +39,7 @@ class LaunchAPI extends RESTDataSource {
   }
 
   async getLaunchesByIds({ launchIds }) {
-    return Promise.all(
-      launchIds.map(launchId => this.getLaunchById({ launchId })),
-    );
+    return Promise.all(launchIds.map(launchId => this.getLaunchById({ launchId })));
   }
 }
 
