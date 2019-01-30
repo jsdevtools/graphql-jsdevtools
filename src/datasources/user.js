@@ -32,18 +32,16 @@ class UserAPI extends DataSource {
 
   async bookTrips({ launchIds }) {
     const userId = this.context.user.id;
-    if (!userId) return;
+    if (!userId) return [];
 
-    let results = [];
+    const retVals = [];
 
     // for each launch id, try to book the trip and add it to the results array
     // if successful
-    for (const launchId of launchIds) {
-      const res = await this.bookTrip({ launchId });
-      if (res) results.push(res);
-    }
+    const results = launchIds.map(launchId => this.bookTrip({ launchId }));
+    Promise.all(results).then(completed => completed.filter(res => res).map(res => retVals.push(res)));
 
-    return results;
+    return retVals;
   }
 
   async bookTrip({ launchId }) {
