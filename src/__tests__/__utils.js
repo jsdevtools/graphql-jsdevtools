@@ -5,14 +5,14 @@ const { execute, toPromise } = require('apollo-link');
 module.exports.toPromise = toPromise;
 
 const {
-  dataSources,
+  // dataSources,
   context: defaultContext,
   typeDefs,
   resolvers,
   ApolloServer,
   LaunchAPI,
   UserAPI,
-  store,
+  store
 } = require('../');
 
 /**
@@ -26,7 +26,7 @@ const constructTestServer = ({ context = defaultContext } = {}) => {
     typeDefs,
     resolvers,
     dataSources: () => ({ userAPI, launchAPI }),
-    context,
+    context
   });
 
   return { server, userAPI, launchAPI };
@@ -48,16 +48,15 @@ const startTestServer = async server => {
 
   const link = new HttpLink({
     uri: `http://localhost:${httpServer.port}`,
-    fetch,
+    fetch
   });
 
-  const executeOperation = ({ query, variables = {} }) =>
-    execute(link, { query, variables });
+  const executeOperation = ({ query, variables = {} }) => execute(link, { query, variables });
 
   return {
     link,
     stop: () => httpServer.server.close(),
-    graphql: executeOperation,
+    graphql: executeOperation
   };
 };
 
