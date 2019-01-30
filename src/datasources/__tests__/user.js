@@ -3,13 +3,13 @@ const UserAPI = require('../user');
 const mockStore = {
   users: {
     findOrCreate: jest.fn(),
-    findAll: jest.fn(),
+    findAll: jest.fn()
   },
   trips: {
     findOrCreate: jest.fn(),
     destroy: jest.fn(),
-    findAll: jest.fn(),
-  },
+    findAll: jest.fn()
+  }
 };
 module.exports.mockStore = mockStore;
 
@@ -31,7 +31,7 @@ describe('[UserAPI.findOrCreateUser]', () => {
 
     // make sure store is called properly
     expect(mockStore.users.findOrCreate).toBeCalledWith({
-      where: { email: 'a@a.a' },
+      where: { email: 'a@a.a' }
     });
   });
 
@@ -54,7 +54,7 @@ describe('[UserAPI.bookTrip]', () => {
 
     // make sure store is called properly
     expect(mockStore.trips.findOrCreate).toBeCalledWith({
-      where: { launchId: 1, userId: 1 },
+      where: { launchId: 1, userId: 1 }
     });
   });
 });
@@ -86,10 +86,7 @@ describe('[UserAPI.cancelTrip]', () => {
 describe('[UserAPI.getLaunchIdsByUser]', () => {
   it('looks up launches by user', async () => {
     const args = { userId: 1 };
-    const launches = [
-      { dataValues: { launchId: 1 } },
-      { dataValues: { launchId: 2 } },
-    ];
+    const launches = [{ dataValues: { launchId: 1 } }, { dataValues: { launchId: 2 } }];
     mockStore.trips.findAll.mockReturnValueOnce(launches);
 
     // check the result of the fn
