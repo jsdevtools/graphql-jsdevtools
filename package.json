@@ -18,6 +18,7 @@
     "apollo-link-http": "^1.5.5",
     "apollo-server": "2.3.1",
     "apollo-server-testing": "2.3.1",
+    "babel-eslint": "^10.0.1",
     "codacy-coverage": "^3.4.0",
     "codecov": "^3.1.0",
     "coveralls": "^3.0.2",
