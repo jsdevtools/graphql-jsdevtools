@@ -4,9 +4,9 @@ describe('[User.trips]', () => {
   const mockContext = {
     dataSources: {
       userAPI: { getLaunchIdsByUser: jest.fn() },
-      launchAPI: { getLaunchesByIds: jest.fn() },
+      launchAPI: { getLaunchesByIds: jest.fn() }
     },
-    user: { id: 1 },
+    user: { id: 1 }
   };
   const { getLaunchIdsByUser } = mockContext.dataSources.userAPI;
   const { getLaunchesByIds } = mockContext.dataSources.launchAPI;

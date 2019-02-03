@@ -3,8 +3,8 @@ const resolvers = require('../resolvers');
 describe('[Query.launches]', () => {
   const mockContext = {
     dataSources: {
-      launchAPI: { getAllLaunches: jest.fn() },
-    },
+      launchAPI: { getAllLaunches: jest.fn() }
+    }
   };
   // just for easy access
   const { getAllLaunches } = mockContext.dataSources.launchAPI;
@@ -18,48 +18,34 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       cursor: 'foo',
       hasMore: false,
-      launches: [{ id: 999, cursor: 'foo' }],
+      launches: [{ id: 999, cursor: 'foo' }]
     });
   });
 
   it('respects pageSize arg', async () => {
     // NOTE: these results get reversed in the resolver
-    getAllLaunches.mockReturnValue([
-      { id: 1, cursor: 'foo' },
-      { id: 999, cursor: 'bar' },
-    ]);
+    getAllLaunches.mockReturnValue([{ id: 1, cursor: 'foo' }, { id: 999, cursor: 'bar' }]);
 
     // check the resolver response
-    const res = await resolvers.Query.launches(
-      null,
-      { pageSize: 1 },
-      mockContext,
-    );
+    const res = await resolvers.Query.launches(null, { pageSize: 1 }, mockContext);
     expect(res).toEqual({
       cursor: 'bar',
       hasMore: true,
-      launches: [{ id: 999, cursor: 'bar' }],
+      launches: [{ id: 999, cursor: 'bar' }]
     });
   });
 
   it('respects cursor arg', async () => {
     // NOTE: these results get reversed in the resolver
-    getAllLaunches.mockReturnValueOnce([
-      { id: 1, cursor: 'a' },
-      { id: 999, cursor: 'b' },
-    ]);
+    getAllLaunches.mockReturnValueOnce([{ id: 1, cursor: 'a' }, { id: 999, cursor: 'b' }]);
 
     // check the resolver response
-    const res = await resolvers.Query.launches(
-      null,
-      { after: 'b' },
-      mockContext,
-    );
+    const res = await resolvers.Query.launches(null, { after: 'b' }, mockContext);
 
     expect(res).toEqual({
       hasMore: false,
       cursor: 'a',
-      launches: [{ id: 1, cursor: 'a' }],
+      launches: [{ id: 1, cursor: 'a' }]
     });
   });
 
@@ -68,20 +54,16 @@ describe('[Query.launches]', () => {
     getAllLaunches.mockReturnValue([
       { id: 1, cursor: 'a' },
       { id: 999, cursor: 'b' },
-      { id: 123, cursor: 'c' },
+      { id: 123, cursor: 'c' }
     ]);
 
     // check the resolver response
-    const res = await resolvers.Query.launches(
-      null,
-      { after: 'c', pageSize: 1 },
-      mockContext,
-    );
+    const res = await resolvers.Query.launches(null, { after: 'c', pageSize: 1 }, mockContext);
 
     expect(res).toEqual({
       cursor: 'b',
       hasMore: true,
-      launches: [{ id: 999, cursor: 'b' }],
+      launches: [{ id: 999, cursor: 'b' }]
     });
   });
 });
@@ -89,14 +71,15 @@ describe('[Query.launches]', () => {
 describe('[Query.launch]', () => {
   const mockContext = {
     dataSources: {
-      launchAPI: { getLaunchById: jest.fn() },
-    },
+      launchAPI: { getLaunchById: jest.fn() }
+    }
   };
 
   it('calls lookup from launch api', async () => {
+    // eslint-disable-next-line prefer-destructuring
     const getLaunchById = mockContext.dataSources.launchAPI.getLaunchById;
     getLaunchById.mockReturnValueOnce({
-      id: 999,
+      id: 999
     });
 
     // check the resolver response
@@ -111,9 +94,9 @@ describe('[Query.launch]', () => {
 describe('[Query.me]', () => {
   const mockContext = {
     dataSources: {
-      userAPI: { findOrCreateUser: jest.fn() },
+      userAPI: { findOrCreateUser: jest.fn() }
     },
-    user: {},
+    user: {}
   };
 
   it('returns null if no user in context', async () => {
@@ -122,13 +105,14 @@ describe('[Query.me]', () => {
 
   it('returns user from userAPI', async () => {
     mockContext.user.email = 'a@a.a';
+    // eslint-disable-next-line prefer-destructuring
     const findOrCreateUser = mockContext.dataSources.userAPI.findOrCreateUser;
     findOrCreateUser.mockReturnValueOnce({ id: 999 });
 
     // check return value of resolver
     const res = await resolvers.Query.me(null, null, mockContext);
     expect(res).toEqual({
-      id: 999,
+      id: 999
     });
   });
 });
