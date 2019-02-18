@@ -77,6 +77,7 @@ describe('[UserAPI.bookTrip]', () => {
 
 describe('[UserAPI.bookTrips]', () => {
   it('returns multiple lookups from bookTrip', async () => {
+    console.log('CONTEXT', ds.context);
     mockStore.trips.findOrCreate.mockReturnValueOnce([{ get: () => 'heya' }]);
     mockStore.trips.findOrCreate.mockReturnValueOnce([{ get: () => 'okay' }]);
 
