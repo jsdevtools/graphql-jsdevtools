@@ -4,7 +4,7 @@ const Knex = require('knex');
 const { SQLDataSource } = require('datasource-sql');
 const isEmail = require('isemail');
 
-pg.defaults.ssl = true;
+// pg.defaults.ssl = true;
 
 // const MINUTE = 60 * 1000;
 
