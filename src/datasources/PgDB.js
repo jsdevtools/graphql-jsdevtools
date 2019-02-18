@@ -8,10 +8,8 @@ const isEmail = require('isemail');
 const createKnex = ({ connectionString }) =>
   Knex({
     client: 'pg',
-    connection: connectionString,
-    searchPath: ['public'],
-    ssl: true,
-    pool: { min: 0, max: 1 }
+    connection: process.env.NODE_ENV === 'test' ? connectionString : `${connectionString}?ssl=true`,
+    searchPath: ['public']
   });
 
 class PgDB extends SQLDataSource {
