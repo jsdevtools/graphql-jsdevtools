@@ -1,7 +1,10 @@
 require('dotenv').config();
+const pg = require('pg');
 const Knex = require('knex');
 const { SQLDataSource } = require('datasource-sql');
 const isEmail = require('isemail');
+
+pg.defaults.ssl = true;
 
 // const MINUTE = 60 * 1000;
 
@@ -9,7 +12,8 @@ const createKnex = ({ connectionString }) =>
   Knex({
     client: 'pg',
     connection: process.env.NODE_ENV === 'test' ? connectionString : `${connectionString}?ssl=true`,
-    searchPath: ['public']
+    searchPath: ['public'],
+    ssl: true
   });
 
 class PgDB extends SQLDataSource {
