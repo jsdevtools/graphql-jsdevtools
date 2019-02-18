@@ -31,8 +31,7 @@ class UserAPI extends DataSource {
   }
 
   async bookTrips({ launchIds }) {
-    const userId = this.context.user.id;
-    if (!userId) return [];
+    if (!this.context || !this.context.user || !this.context.user.id) return [];
 
     const retVals = [];
 
@@ -49,7 +48,7 @@ class UserAPI extends DataSource {
     const res = await this.store.trips.findOrCreate({
       where: { userId, launchId }
     });
-    return res && res.length ? res[0].get() : false;
+    return res[0].get();
   }
 
   async cancelTrip({ launchId }) {

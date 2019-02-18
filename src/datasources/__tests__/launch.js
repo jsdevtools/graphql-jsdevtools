@@ -152,6 +152,26 @@ describe('[LaunchAPI.getAllLaunches]', () => {
     expect(res).toEqual([mockLaunch]);
     expect(mocks.get).toBeCalledWith('launches');
   });
+
+  it('looks up launches from api, but fails', async () => {
+    // if api response is list of raw launches,
+    // res should be list of transformed launches
+    mocks.get.mockReturnValueOnce(undefined);
+    const res = await ds.getAllLaunches();
+
+    expect(res).toEqual([]);
+    expect(mocks.get).toBeCalledWith('launches');
+  });
+
+  it('looks up launches from api, no flightnumber', async () => {
+    // if api response is list of raw launches,
+    // res should be list of transformed launches
+    mocks.get.mockReturnValueOnce([{ ...mockLaunchResponse, flight_number: undefined }]);
+    const res = await ds.getAllLaunches();
+
+    expect(res).toEqual([{ ...mockLaunch, id: 0 }]);
+    expect(mocks.get).toBeCalledWith('launches');
+  });
 });
 
 describe('[LaunchAPI.getLaunchById]', () => {

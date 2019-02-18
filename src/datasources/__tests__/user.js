@@ -14,10 +14,13 @@ const mockStore = {
 module.exports.mockStore = mockStore;
 
 const ds = new UserAPI({ store: mockStore });
-ds.initialize({ context: { user: { id: 1, email: 'a@a.a' } } });
+
+beforeEach(() => ds.initialize({ context: { user: { id: 1, email: 'a@a.a' } } }));
 
 describe('[UserAPI.findOrCreateUser]', () => {
   it('returns null for invalid emails', async () => {
+    ds.initialize({});
+
     const res = await ds.findOrCreateUser({ email: 'boo!' });
     expect(res).toEqual(null);
   });
@@ -41,6 +44,19 @@ describe('[UserAPI.findOrCreateUser]', () => {
 
     const res = await ds.findOrCreateUser({ email: 'a@a.a' });
     expect(res).toEqual(null);
+  });
+
+  it('findOrCreateUser using email in context', async () => {
+    mockStore.users.findOrCreate.mockReturnValueOnce([{ id: 1 }]);
+
+    // check the result of the fn
+    const res = await ds.findOrCreateUser();
+    expect(res).toEqual({ id: 1 });
+
+    // make sure store is called properly
+    expect(mockStore.users.findOrCreate).toBeCalledWith({
+      where: { email: 'a@a.a' }
+    });
   });
 });
 
@@ -66,6 +82,13 @@ describe('[UserAPI.bookTrips]', () => {
 
     const res = await ds.bookTrips({ launchIds: [1, 2] });
     expect(res).toEqual(['heya', 'okay']);
+  });
+
+  it('returns empty array when no userId in context', async () => {
+    ds.initialize({});
+
+    const res = await ds.bookTrips({ launchIds: [1, 2] });
+    expect(res).toEqual([]);
   });
 });
 
@@ -105,5 +128,42 @@ describe('[UserAPI.getLaunchIdsByUser]', () => {
     // check the result of the fn
     const res = await ds.getLaunchIdsByUser(args);
     expect(res).toEqual([]);
+  });
+
+  describe('[UserAPI.isBookedOnLaunch]', () => {
+    it('looks up if user booked on launch', async () => {
+      const args = { launchId: 1 };
+      const ctx = { userId: 1 };
+      mockStore.trips.findAll.mockReturnValueOnce([{ ...args, ...ctx }]);
+
+      // check the result of the fn
+      const res = await ds.isBookedOnLaunch(args);
+      expect(res).toEqual(true);
+
+      // make sure store is called properly
+      expect(mockStore.trips.findAll).toBeCalledWith({ where: { ...args, ...ctx } });
+    });
+
+    it('looks up and user is not booked on launch', async () => {
+      const args = { launchId: 1 };
+      const ctx = { userId: 1 };
+      mockStore.trips.findAll.mockReturnValueOnce([]);
+
+      // check the result of the fn
+      const res = await ds.isBookedOnLaunch(args);
+      expect(res).toEqual(false);
+
+      // make sure store is called properly
+      expect(mockStore.trips.findAll).toBeCalledWith({ where: { ...args, ...ctx } });
+    });
+
+    it('looks up if user booked on launch, but no user in context', async () => {
+      const args = { launchId: 1 };
+      ds.initialize({});
+
+      // check the result of the fn
+      const res = await ds.isBookedOnLaunch(args);
+      expect(res).toEqual(false);
+    });
   });
 });

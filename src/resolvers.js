@@ -24,11 +24,13 @@ module.exports = {
       };
     },
     launch: (_, { id }, { dataSources }) => dataSources.launchAPI.getLaunchById({ launchId: id }),
-    me: async (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
+    // me: async (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
+    me: async (_, __, { dataSources }) => dataSources.pgDB.findOrCreateUser()
   },
   Mutation: {
     bookTrips: async (_, { launchIds }, { dataSources }) => {
-      const results = await dataSources.userAPI.bookTrips({ launchIds });
+      // const results = await dataSources.userAPI.bookTrips({ launchIds });
+      const results = await dataSources.pgDB.bookTrips({ launchIds });
       const launches = await dataSources.launchAPI.getLaunchesByIds({
         launchIds
       });
@@ -43,7 +45,8 @@ module.exports = {
       };
     },
     cancelTrip: async (_, { launchId }, { dataSources }) => {
-      const result = dataSources.userAPI.cancelTrip({ launchId });
+      // const result = dataSources.userAPI.cancelTrip({ launchId });
+      const result = dataSources.pgDB.cancelTrip({ launchId });
 
       if (!result)
         return {
@@ -59,13 +62,16 @@ module.exports = {
       };
     },
     login: async (_, { email }, { dataSources }) => {
-      const user = await dataSources.userAPI.findOrCreateUser({ email });
+      // const user = await dataSources.userAPI.findOrCreateUser({ email });
+      const user = await dataSources.pgDB.findOrCreateUser({ email });
       if (user) return Buffer.from(email).toString('base64');
+      return null;
     }
   },
   Launch: {
     isBooked: async (launch, _, { dataSources }) =>
-      dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id })
+      // dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id })
+      dataSources.pgDB.isBookedOnLaunch({ launchId: launch.id })
   },
   Mission: {
     // make sure the default size is 'large' in case user doesn't specify
@@ -76,7 +82,8 @@ module.exports = {
   User: {
     trips: async (_, __, { dataSources }) => {
       // get ids of launches by user
-      const launchIds = await dataSources.userAPI.getLaunchIdsByUser();
+      // const launchIds = await dataSources.userAPI.getLaunchIdsByUser();
+      const launchIds = await dataSources.pgDB.getLaunchIdsByUser();
 
       if (!launchIds.length) return [];
 

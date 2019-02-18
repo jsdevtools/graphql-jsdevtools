@@ -1,6 +1,6 @@
 module.exports = {
   service: {
-    name: 'def-graphql-jsdevtools',
-    service: 'dev-graphql-jsdevtools'
-  },
+    name: 'graphql_jsdevtools',
+    service: 'graphql_jsdevtools'
+  }
 };

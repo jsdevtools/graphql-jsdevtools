@@ -35,6 +35,15 @@ describe('[Query.launches]', () => {
     });
   });
 
+  it('pagesize of zero returns empty', async () => {
+    const res = await resolvers.Query.launches(null, { pageSize: 0 }, mockContext);
+    expect(res).toEqual({
+      cursor: null,
+      hasMore: false,
+      launches: []
+    });
+  });
+
   it('respects cursor arg', async () => {
     // NOTE: these results get reversed in the resolver
     getAllLaunches.mockReturnValueOnce([{ id: 1, cursor: 'a' }, { id: 999, cursor: 'b' }]);
@@ -46,6 +55,34 @@ describe('[Query.launches]', () => {
       hasMore: false,
       cursor: 'a',
       launches: [{ id: 1, cursor: 'a' }]
+    });
+  });
+
+  it('respects cursor not found', async () => {
+    // NOTE: these results get reversed in the resolver
+    getAllLaunches.mockReturnValueOnce([{ id: 1 }, { id: 999 }]);
+
+    // check the resolver response
+    const res = await resolvers.Query.launches(null, { after: 'a' }, mockContext);
+
+    expect(res).toEqual({
+      hasMore: false,
+      cursor: undefined,
+      launches: [{ id: 999 }, { id: 1 }]
+    });
+  });
+
+  it('does not overflow when cursor at end', async () => {
+    // NOTE: these results get reversed in the resolver
+    getAllLaunches.mockReturnValueOnce([{ id: 1, cursor: 'a' }, { id: 999, cursor: 'b' }]);
+
+    // check the resolver response
+    const res = await resolvers.Query.launches(null, { after: 'a' }, mockContext);
+
+    expect(res).toEqual({
+      hasMore: false,
+      cursor: null,
+      launches: []
     });
   });
 
@@ -94,7 +131,8 @@ describe('[Query.launch]', () => {
 describe('[Query.me]', () => {
   const mockContext = {
     dataSources: {
-      userAPI: { findOrCreateUser: jest.fn() }
+      userAPI: { findOrCreateUser: jest.fn() },
+      pgDB: { findOrCreateUser: jest.fn() }
     },
     user: {}
   };
@@ -106,7 +144,8 @@ describe('[Query.me]', () => {
   it('returns user from userAPI', async () => {
     mockContext.user.email = 'a@a.a';
     // eslint-disable-next-line prefer-destructuring
-    const findOrCreateUser = mockContext.dataSources.userAPI.findOrCreateUser;
+    const findOrCreateUser = mockContext.dataSources.pgDB.findOrCreateUser;
+    // const findOrCreateUser = mockContext.dataSources.userAPI.findOrCreateUser;
     findOrCreateUser.mockReturnValueOnce({ id: 999 });
 
     // check return value of resolver
