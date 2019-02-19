@@ -31,17 +31,13 @@ class UserAPI extends DataSource {
   }
 
   async bookTrips({ launchIds }) {
-    console.log('potential A');
     if (!this.context || !this.context.user || !this.context.user.id) return [];
-    console.log('which path was taken?');
     const retVals = [];
 
     // for each launch id, try to book the trip and add it to the results array
     // if successful
     const results = launchIds.map(launchId => this.bookTrip({ launchId }));
-    console.log('results', results);
     Promise.all(results).then(completed => completed.filter(res => res).map(res => retVals.push(res)));
-    console.log('retVals', retVals);
     return retVals;
   }
 
