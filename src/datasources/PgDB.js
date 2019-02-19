@@ -4,7 +4,7 @@ const Knex = require('knex');
 const { SQLDataSource } = require('datasource-sql');
 const isEmail = require('isemail');
 
-if (process.env.NODE_ENV !== 'test') {
+if (!process.env.DATABASE_URL.match(/127.0.0.1/)) {
   pg.defaults.ssl = true;
 }
 
