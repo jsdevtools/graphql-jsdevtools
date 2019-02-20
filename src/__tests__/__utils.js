@@ -1,6 +1,7 @@
 const { HttpLink } = require('apollo-link-http');
 const fetch = require('node-fetch');
 const { execute, toPromise } = require('apollo-link');
+const PgDB = require('../datasources/PgDB');
 
 module.exports.toPromise = toPromise;
 
@@ -21,15 +22,16 @@ const {
 const constructTestServer = ({ context = defaultContext } = {}) => {
   const userAPI = new UserAPI({ store });
   const launchAPI = new LaunchAPI();
+  const pgDB = PgDB.getInstance();
 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    dataSources: () => ({ userAPI, launchAPI }),
+    dataSources: () => ({ userAPI, launchAPI, pgDB }),
     context
   });
 
-  return { server, userAPI, launchAPI };
+  return { server, userAPI, launchAPI, pgDB };
 };
 
 module.exports.constructTestServer = constructTestServer;
@@ -38,7 +40,7 @@ module.exports.constructTestServer = constructTestServer;
  * e2e Testing Utils
  */
 
-const startTestServer = async server => {
+const startTestServer = async (server, headers = {}) => {
   // if using apollo-server-express...
   // const app = express();
   // server.applyMiddleware({ app });
@@ -48,7 +50,8 @@ const startTestServer = async server => {
 
   const link = new HttpLink({
     uri: `http://localhost:${httpServer.port}`,
-    fetch
+    fetch,
+    headers
   });
 
   const executeOperation = ({ query, variables = {} }) => execute(link, { query, variables });

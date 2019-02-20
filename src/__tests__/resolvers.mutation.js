@@ -10,13 +10,19 @@ const mockContext = {
     launchAPI: {
       getLaunchesByIds: jest.fn(),
       getLaunchById: jest.fn()
+    },
+    pgDB: {
+      bookTrips: jest.fn(),
+      cancelTrip: jest.fn(),
+      findOrCreateUser: jest.fn()
     }
   },
   user: { id: 1, email: 'a@a.a' }
 };
 
 describe('[Mutation.bookTrips]', () => {
-  const { bookTrips } = mockContext.dataSources.userAPI;
+  // const { bookTrips } = mockContext.dataSources.userAPI;
+  const { bookTrips } = mockContext.dataSources.pgDB;
   const { getLaunchesByIds } = mockContext.dataSources.launchAPI;
 
   it('returns true if booking succeeds', async () => {
@@ -47,7 +53,8 @@ describe('[Mutation.bookTrips]', () => {
 });
 
 describe('[Mutation.cancelTrip]', () => {
-  const { cancelTrip } = mockContext.dataSources.userAPI;
+  // const { cancelTrip } = mockContext.dataSources.userAPI;
+  const { cancelTrip } = mockContext.dataSources.pgDB;
   const { getLaunchById } = mockContext.dataSources.launchAPI;
 
   it('returns true if cancelling succeeds', async () => {
@@ -77,12 +84,13 @@ describe('[Mutation.cancelTrip]', () => {
 });
 
 describe('[Mutation.login]', () => {
-  const { findOrCreateUser } = mockContext.dataSources.userAPI;
+  // const { findOrCreateUser } = mockContext.dataSources.userAPI;
+  const { findOrCreateUser } = mockContext.dataSources.pgDB;
 
   it('returns base64 encoded email if successful', async () => {
     const args = { email: 'a@a.a' };
     findOrCreateUser.mockReturnValueOnce(true);
-    // const base64Email = Buffer.from(mockContext.user.email).toString('base64');
+    const base64Email = Buffer.from(mockContext.user.email).toString('base64');
 
     // check the resolver response
     const res = await resolvers.Mutation.login(null, args, mockContext);

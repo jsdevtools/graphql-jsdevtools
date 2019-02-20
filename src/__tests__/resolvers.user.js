@@ -3,12 +3,14 @@ const resolvers = require('../resolvers');
 describe('[User.trips]', () => {
   const mockContext = {
     dataSources: {
-      userAPI: { getLaunchIdsByUser: jest.fn() },
+      // userAPI: { getLaunchIdsByUser: jest.fn() },
       launchAPI: { getLaunchesByIds: jest.fn() },
+      pgDB: { getLaunchIdsByUser: jest.fn() }
     },
-    user: { id: 1 },
+    user: { id: 1 }
   };
-  const { getLaunchIdsByUser } = mockContext.dataSources.userAPI;
+  // const { getLaunchIdsByUser } = mockContext.dataSources.userAPI;
+  const { getLaunchIdsByUser } = mockContext.dataSources.pgDB;
   const { getLaunchesByIds } = mockContext.dataSources.launchAPI;
 
   it('uses user id from context to lookup trips', async () => {

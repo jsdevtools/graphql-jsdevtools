@@ -31,16 +31,14 @@ class UserAPI extends DataSource {
   }
 
   async bookTrips({ launchIds }) {
-    const userId = this.context.user.id;
-    if (!userId) return [];
+    if (!this.context || !this.context.user || !this.context.user.id) return [];
 
-    const retVals = [];
-
-    // for each launch id, try to book the trip and add it to the results array
-    // if successful
-    const results = launchIds.map(launchId => this.bookTrip({ launchId }));
-    Promise.all(results).then(completed => completed.filter(res => res).map(res => retVals.push(res)));
-
+    const results = launchIds.map(async launchId => this.bookTrip({ launchId }));
+    const retVals = Promise.all(results).then(completed => {
+      return completed.filter(res => {
+        return !!res;
+      });
+    });
     return retVals;
   }
 
@@ -49,7 +47,7 @@ class UserAPI extends DataSource {
     const res = await this.store.trips.findOrCreate({
       where: { userId, launchId }
     });
-    return res && res.length ? res[0].get() : false;
+    return res[0].get();
   }
 
   async cancelTrip({ launchId }) {
