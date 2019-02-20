@@ -82,9 +82,11 @@ describe('[UserAPI.bookTrips]', () => {
 
     const res = await ds.bookTrips({ launchIds: [1, 2] });
     expect(res).toEqual(['heya', 'okay']);
+    console.log('finished first');
   });
 
   it('returns empty array when no userId in context', async () => {
+    console.log('starting second');
     const res = await ds2.bookTrips({ launchIds: [1, 2] });
     expect(res).toEqual([]);
   });
