@@ -16,11 +16,11 @@ module.exports.mockStore = mockStore;
 const ds = new UserAPI({ store: mockStore });
 ds.initialize({ context: { user: { id: 1, email: 'a@a.a' } } });
 
+const ds2 = new UserAPI({ store: mockStore });
+ds2.initialize({});
+
 describe('[UserAPI.findOrCreateUser]', () => {
   it('returns null for invalid emails', async () => {
-    const ds2 = new UserAPI({ store: mockStore });
-    ds2.context = {};
-
     const res = await ds2.findOrCreateUser({ email: 'boo!' });
     expect(res).toEqual(null);
   });
@@ -85,9 +85,6 @@ describe('[UserAPI.bookTrips]', () => {
   });
 
   it('returns empty array when no userId in context', async () => {
-    const ds2 = new UserAPI({ store: mockStore });
-    ds2.context = {};
-
     const res = await ds2.bookTrips({ launchIds: [1, 2] });
     expect(res).toEqual([]);
   });
@@ -160,8 +157,6 @@ describe('[UserAPI.getLaunchIdsByUser]', () => {
 
     it('looks up if user booked on launch, but no user in context', async () => {
       const args = { launchId: 1 };
-      const ds2 = new UserAPI({ store: mockStore });
-      ds2.context = {};
 
       // check the result of the fn
       const res = await ds2.isBookedOnLaunch(args);
