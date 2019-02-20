@@ -14,7 +14,7 @@ const mockStore = {
 module.exports.mockStore = mockStore;
 
 const ds = new UserAPI({ store: mockStore });
-ds.initialize({ context: { user: { id: 1, email: 'a@a.a' }, cache: null } });
+ds.initialize({ context: { user: { id: 1, email: 'a@a.a' } }, cache: null });
 
 const ds2 = new UserAPI({ store: mockStore });
 ds2.initialize({ context: {}, cache: null });
