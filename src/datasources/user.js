@@ -38,7 +38,7 @@ class UserAPI extends DataSource {
 
     // for each launch id, try to book the trip and add it to the results array
     // if successful
-    const results = launchIds.map(launchId => this.bookTrip({ launchId }));
+    const results = launchIds.map(async launchId => this.bookTrip({ launchId }));
     Promise.all(results).then(completed => completed.filter(res => !!res).map(res => retVals.push(res)));
     return retVals;
   }
