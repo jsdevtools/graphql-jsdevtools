@@ -53,6 +53,7 @@ class UserAPI extends DataSource {
       //      console.log('retVals', retVals);
       //      return retVals;
     });
+    console.log('retVals', retVals);
     return retVals;
   }
 
