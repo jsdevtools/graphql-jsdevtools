@@ -31,9 +31,7 @@ class UserAPI extends DataSource {
   }
 
   async bookTrips({ launchIds }) {
-    console.log('pre-context check', this.context);
     if (!this.context || !this.context.user || !this.context.user.id) return [];
-    console.log('post-context check', this.context);
 
     const results = launchIds.map(async launchId => this.bookTrip({ launchId }));
     const retVals = Promise.all(results).then(completed => {
