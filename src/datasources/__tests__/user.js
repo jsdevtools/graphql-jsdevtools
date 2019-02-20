@@ -17,7 +17,7 @@ const ds = new UserAPI({ store: mockStore });
 ds.initialize({ context: { user: { id: 1, email: 'a@a.a' } } });
 
 const ds2 = new UserAPI({ store: mockStore });
-ds2.initialize({});
+ds2.initialize({ context: {} });
 
 describe('[UserAPI.findOrCreateUser]', () => {
   it('returns null for invalid emails', async () => {
