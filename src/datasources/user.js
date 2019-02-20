@@ -34,26 +34,13 @@ class UserAPI extends DataSource {
     console.log('pre-context check', this.context);
     if (!this.context || !this.context.user || !this.context.user.id) return [];
     console.log('post-context check', this.context);
-    // const retVals = [];
 
-    // for each launch id, try to book the trip and add it to the results array
-    // if successful
     const results = launchIds.map(async launchId => this.bookTrip({ launchId }));
-    console.log('results', results);
     const retVals = Promise.all(results).then(completed => {
-      console.log('completed', completed);
       return completed.filter(res => {
-        console.log('res', res);
         return !!res;
       });
-      //        .forEach(res2 => {
-      //          console.log('res2', res2);
-      //          retVals.push(res2);
-      //        });
-      //      console.log('retVals', retVals);
-      //      return retVals;
     });
-    console.log('retVals', retVals);
     return retVals;
   }
 
