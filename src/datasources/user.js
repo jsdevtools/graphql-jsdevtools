@@ -40,7 +40,18 @@ class UserAPI extends DataSource {
     // if successful
     const results = launchIds.map(async launchId => this.bookTrip({ launchId }));
     console.log('results', results);
-    Promise.all(results).then(completed => completed.filter(res => !!res).map(res => retVals.push(res)));
+    Promise.all(results).then(completed => {
+      console.log('completed', completed);
+      completed
+        .filter(res => {
+          console.log('res', res);
+          return !!res;
+        })
+        .forEach(res2 => {
+          console.log('res2', res2);
+          retVals.push(res2);
+        });
+    });
     return retVals;
   }
 
