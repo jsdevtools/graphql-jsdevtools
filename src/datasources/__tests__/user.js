@@ -3,13 +3,13 @@ const UserAPI = require('../user');
 const mockStore = {
   users: {
     findOrCreate: jest.fn(),
-    findAll: jest.fn()
+    findAll: jest.fn(),
   },
   trips: {
     findOrCreate: jest.fn(),
     destroy: jest.fn(),
-    findAll: jest.fn()
-  }
+    findAll: jest.fn(),
+  },
 };
 module.exports.mockStore = mockStore;
 
@@ -34,7 +34,7 @@ describe('[UserAPI.findOrCreateUser]', () => {
 
     // make sure store is called properly
     expect(mockStore.users.findOrCreate).toBeCalledWith({
-      where: { email: 'a@a.a' }
+      where: { email: 'a@a.a' },
     });
   });
 
@@ -55,7 +55,7 @@ describe('[UserAPI.findOrCreateUser]', () => {
 
     // make sure store is called properly
     expect(mockStore.users.findOrCreate).toBeCalledWith({
-      where: { email: 'a@a.a' }
+      where: { email: 'a@a.a' },
     });
   });
 });
@@ -70,7 +70,7 @@ describe('[UserAPI.bookTrip]', () => {
 
     // make sure store is called properly
     expect(mockStore.trips.findOrCreate).toBeCalledWith({
-      where: { launchId: 1, userId: 1 }
+      where: { launchId: 1, userId: 1 },
     });
   });
 });

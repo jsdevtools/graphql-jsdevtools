@@ -5,5 +5,5 @@ module.exports = {
     const clientName = request.http.headers.get('client-name');
     const clientVersion = request.http.headers.get('client-version');
     return { clientName, clientVersion };
-  }
+  },
 };

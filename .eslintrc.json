@@ -7,12 +7,6 @@
   "extends": ["airbnb-base", "prettier"],
   "rules": {
     "prettier/prettier": ["error"],
-    "comma-dangle": [
-      "error",
-      {
-        "functions": "never"
-      }
-    ],
     "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "react/react-in-jsx-scope": 2,

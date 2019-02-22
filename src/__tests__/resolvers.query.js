@@ -3,8 +3,8 @@ const resolvers = require('../resolvers');
 describe('[Query.launches]', () => {
   const mockContext = {
     dataSources: {
-      launchAPI: { getAllLaunches: jest.fn() }
-    }
+      launchAPI: { getAllLaunches: jest.fn() },
+    },
   };
   // just for easy access
   const { getAllLaunches } = mockContext.dataSources.launchAPI;
@@ -18,7 +18,7 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       cursor: 'foo',
       hasMore: false,
-      launches: [{ id: 999, cursor: 'foo' }]
+      launches: [{ id: 999, cursor: 'foo' }],
     });
   });
 
@@ -31,7 +31,7 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       cursor: 'bar',
       hasMore: true,
-      launches: [{ id: 999, cursor: 'bar' }]
+      launches: [{ id: 999, cursor: 'bar' }],
     });
   });
 
@@ -40,7 +40,7 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       cursor: null,
       hasMore: false,
-      launches: []
+      launches: [],
     });
   });
 
@@ -54,7 +54,7 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       hasMore: false,
       cursor: 'a',
-      launches: [{ id: 1, cursor: 'a' }]
+      launches: [{ id: 1, cursor: 'a' }],
     });
   });
 
@@ -68,7 +68,7 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       hasMore: false,
       cursor: undefined,
-      launches: [{ id: 999 }, { id: 1 }]
+      launches: [{ id: 999 }, { id: 1 }],
     });
   });
 
@@ -82,7 +82,7 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       hasMore: false,
       cursor: null,
-      launches: []
+      launches: [],
     });
   });
 
@@ -91,7 +91,7 @@ describe('[Query.launches]', () => {
     getAllLaunches.mockReturnValue([
       { id: 1, cursor: 'a' },
       { id: 999, cursor: 'b' },
-      { id: 123, cursor: 'c' }
+      { id: 123, cursor: 'c' },
     ]);
 
     // check the resolver response
@@ -100,7 +100,7 @@ describe('[Query.launches]', () => {
     expect(res).toEqual({
       cursor: 'b',
       hasMore: true,
-      launches: [{ id: 999, cursor: 'b' }]
+      launches: [{ id: 999, cursor: 'b' }],
     });
   });
 });
@@ -108,15 +108,15 @@ describe('[Query.launches]', () => {
 describe('[Query.launch]', () => {
   const mockContext = {
     dataSources: {
-      launchAPI: { getLaunchById: jest.fn() }
-    }
+      launchAPI: { getLaunchById: jest.fn() },
+    },
   };
 
   it('calls lookup from launch api', async () => {
     // eslint-disable-next-line prefer-destructuring
     const getLaunchById = mockContext.dataSources.launchAPI.getLaunchById;
     getLaunchById.mockReturnValueOnce({
-      id: 999
+      id: 999,
     });
 
     // check the resolver response
@@ -132,9 +132,9 @@ describe('[Query.me]', () => {
   const mockContext = {
     dataSources: {
       userAPI: { findOrCreateUser: jest.fn() },
-      pgDB: { findOrCreateUser: jest.fn() }
+      pgDB: { findOrCreateUser: jest.fn() },
     },
-    user: {}
+    user: {},
   };
 
   it('returns null if no user in context', async () => {
@@ -151,7 +151,7 @@ describe('[Query.me]', () => {
     // check return value of resolver
     const res = await resolvers.Query.me(null, null, mockContext);
     expect(res).toEqual({
-      id: 999
+      id: 999,
     });
   });
 });

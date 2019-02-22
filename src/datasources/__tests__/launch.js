@@ -11,14 +11,14 @@ const mockLaunch = {
   mission: {
     name: 'FalconSat',
     missionPatchSmall: 'https://images2.imgbox.com/3c/0e/T8iJcSN3_o.png',
-    missionPatchLarge: 'https://images2.imgbox.com/40/e3/GypSkayF_o.png'
+    missionPatchLarge: 'https://images2.imgbox.com/40/e3/GypSkayF_o.png',
   },
   site: 'Kwajalein Atoll',
   rocket: {
     id: 'falcon1',
     name: 'Falcon 1',
-    type: 'Merlin A'
-  }
+    type: 'Merlin A',
+  },
 };
 
 // raw launch response from API
@@ -47,9 +47,9 @@ const mockLaunchResponse = {
           land_success: null,
           landing_intent: false,
           landing_type: null,
-          landing_vehicle: null
-        }
-      ]
+          landing_vehicle: null,
+        },
+      ],
     },
     second_stage: {
       block: 1,
@@ -80,33 +80,33 @@ const mockLaunchResponse = {
             mean_motion: null,
             raan: null,
             arg_of_pericenter: null,
-            mean_anomaly: null
-          }
-        }
-      ]
+            mean_anomaly: null,
+          },
+        },
+      ],
     },
     fairings: {
       reused: false,
       recovery_attempt: false,
       recovered: false,
-      ship: null
-    }
+      ship: null,
+    },
   },
   ships: [],
   telemetry: {
-    flight_club: null
+    flight_club: null,
   },
   reuse: {
     core: false,
     side_core1: false,
     side_core2: false,
     fairings: false,
-    capsule: false
+    capsule: false,
   },
   launch_site: {
     site_id: 'kwajalein_atoll',
     site_name: 'Kwajalein Atoll',
-    site_name_long: 'Kwajalein Atoll Omelek Island'
+    site_name_long: 'Kwajalein Atoll Omelek Island',
   },
   launch_success: false,
   links: {
@@ -115,11 +115,11 @@ const mockLaunchResponse = {
     article_link: 'https://www.space.com/2196-spacex-inaugural-falcon-1-rocket-lost-launch.html',
     wikipedia: 'https://en.wikipedia.org/wiki/DemoSat',
     video_link: 'https://www.youtube.com/watch?v=0a_00nJ_Y88',
-    flickr_images: []
+    flickr_images: [],
   },
   details: 'Engine failure at 33 seconds and loss of vehicle',
   static_fire_date_utc: '2006-03-17T00:00:00.000Z',
-  static_fire_date_unix: 1142553600
+  static_fire_date_unix: 1142553600,
 };
 
 /**
@@ -130,7 +130,7 @@ const mockLaunchResponse = {
  */
 
 const mocks = {
-  get: jest.fn()
+  get: jest.fn(),
 };
 
 const ds = new LaunchAPI();

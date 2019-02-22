@@ -19,7 +19,7 @@ const dataSources = () => {
   const retVal = {
     launchAPI: new LaunchAPI(),
     userAPI: new UserAPI({ store }),
-    pgDB: PgDB.getInstance()
+    pgDB: PgDB.getInstance(),
   };
   return retVal;
 };
@@ -53,10 +53,10 @@ const server = new ApolloServer({
       const clientName = request.http.headers.get('client-name');
       const clientVersion = request.http.headers.get('client-version');
       return { clientName, clientVersion };
-    }
+    },
   },
   introspection: true,
-  playground: true
+  playground: true,
 });
 
 // Start our server if we're not in a test env.
@@ -78,5 +78,5 @@ module.exports = {
   LaunchAPI,
   UserAPI,
   store,
-  server
+  server,
 };

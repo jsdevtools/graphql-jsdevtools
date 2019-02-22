@@ -13,7 +13,7 @@ const {
   ApolloServer,
   LaunchAPI,
   UserAPI,
-  store
+  store,
 } = require('../');
 
 /**
@@ -28,7 +28,7 @@ const constructTestServer = ({ context = defaultContext } = {}) => {
     typeDefs,
     resolvers,
     dataSources: () => ({ userAPI, launchAPI, pgDB }),
-    context
+    context,
   });
 
   return { server, userAPI, launchAPI, pgDB };
@@ -51,7 +51,7 @@ const startTestServer = async (server, headers = {}) => {
   const link = new HttpLink({
     uri: `http://localhost:${httpServer.port}`,
     fetch,
-    headers
+    headers,
   });
 
   const executeOperation = ({ query, variables = {} }) => execute(link, { query, variables });
@@ -59,7 +59,7 @@ const startTestServer = async (server, headers = {}) => {
   return {
     link,
     stop: () => httpServer.server.close(),
-    graphql: executeOperation
+    graphql: executeOperation,
   };
 };
 

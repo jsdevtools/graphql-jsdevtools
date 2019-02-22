@@ -5,9 +5,9 @@ describe('[User.trips]', () => {
     dataSources: {
       // userAPI: { getLaunchIdsByUser: jest.fn() },
       launchAPI: { getLaunchesByIds: jest.fn() },
-      pgDB: { getLaunchIdsByUser: jest.fn() }
+      pgDB: { getLaunchIdsByUser: jest.fn() },
     },
-    user: { id: 1 }
+    user: { id: 1 },
   };
   // const { getLaunchIdsByUser } = mockContext.dataSources.userAPI;
   const { getLaunchIdsByUser } = mockContext.dataSources.pgDB;

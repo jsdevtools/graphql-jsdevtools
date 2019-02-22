@@ -5,15 +5,15 @@ const mockStore = {
     findOrCreate: jest.fn(),
     findAll: jest.fn(),
     dropTable: jest.fn(),
-    createTable: jest.fn()
+    createTable: jest.fn(),
   },
   trips: {
     findOrCreate: jest.fn(),
     destroy: jest.fn(),
     findAll: jest.fn(),
     dropTable: jest.fn(),
-    createTable: jest.fn()
-  }
+    createTable: jest.fn(),
+  },
 };
 module.exports.mockStore = mockStore;
 

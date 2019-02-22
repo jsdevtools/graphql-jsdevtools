@@ -173,7 +173,7 @@ describe('Server - e2e, valid auth', () => {
   beforeEach(async () => {
     const testServer = await startTestServer(server, {
       'client-name': 'e2e test client',
-      'client-version': '0.0.1'
+      'client-version': '0.0.1',
     });
     // eslint-disable-next-line prefer-destructuring
     stop = testServer.stop;
@@ -189,7 +189,7 @@ describe('Server - e2e, valid auth', () => {
     const res = await toPromise(
       graphql({
         query: LAUNCH_LIST_QUERY,
-        variables: { pageSize: 1, after: '1517949900' }
+        variables: { pageSize: 1, after: '1517949900' },
       })
     );
 
@@ -211,7 +211,7 @@ describe('Server - e2e, invalid auth', () => {
     const testServer = await startTestServer(server, {
       authorization: 'Zm9vQGJhci5jb20=',
       'client-name': 'JestTestingClient',
-      'client-version': '0.0.1'
+      'client-version': '0.0.1',
     });
     // eslint-disable-next-line prefer-destructuring
     stop = testServer.stop;
@@ -227,7 +227,7 @@ describe('Server - e2e, invalid auth', () => {
     const res = await toPromise(
       graphql({
         query: LAUNCH_LIST_QUERY,
-        variables: { pageSize: 1, after: '1517949900' }
+        variables: { pageSize: 1, after: '1517949900' },
       })
     );
 

@@ -10,7 +10,7 @@ module.exports = {
       const launches = paginateResults({
         after,
         pageSize,
-        results: allLaunches
+        results: allLaunches,
       });
 
       return {
@@ -20,19 +20,19 @@ module.exports = {
         // last item in _all_ results, then there are no more results after this
         hasMore: launches.length
           ? launches[launches.length - 1].cursor !== allLaunches[allLaunches.length - 1].cursor
-          : false
+          : false,
       };
     },
     launch: (_, { id }, { dataSources }) => dataSources.launchAPI.getLaunchById({ launchId: id }),
     // me: async (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
-    me: async (_, __, { dataSources }) => dataSources.pgDB.findOrCreateUser()
+    me: async (_, __, { dataSources }) => dataSources.pgDB.findOrCreateUser(),
   },
   Mutation: {
     bookTrips: async (_, { launchIds }, { dataSources }) => {
       // const results = await dataSources.userAPI.bookTrips({ launchIds });
       const results = await dataSources.pgDB.bookTrips({ launchIds });
       const launches = await dataSources.launchAPI.getLaunchesByIds({
-        launchIds
+        launchIds,
       });
 
       return {
@@ -41,7 +41,7 @@ module.exports = {
           results.length === launchIds.length
             ? 'trips booked successfully'
             : `the following launches couldn't be booked: ${launchIds.filter(id => !results.includes(id))}`,
-        launches
+        launches,
       };
     },
     cancelTrip: async (_, { launchId }, { dataSources }) => {
@@ -51,14 +51,14 @@ module.exports = {
       if (!result)
         return {
           success: false,
-          message: 'failed to cancel trip'
+          message: 'failed to cancel trip',
         };
 
       const launch = await dataSources.launchAPI.getLaunchById({ launchId });
       return {
         success: true,
         message: 'trip cancelled',
-        launches: [launch]
+        launches: [launch],
       };
     },
     login: async (_, { email }, { dataSources }) => {
@@ -66,18 +66,18 @@ module.exports = {
       const user = await dataSources.pgDB.findOrCreateUser({ email });
       if (user) return Buffer.from(email).toString('base64');
       return null;
-    }
+    },
   },
   Launch: {
     isBooked: async (launch, _, { dataSources }) =>
       // dataSources.userAPI.isBookedOnLaunch({ launchId: launch.id })
-      dataSources.pgDB.isBookedOnLaunch({ launchId: launch.id })
+      dataSources.pgDB.isBookedOnLaunch({ launchId: launch.id }),
   },
   Mission: {
     // make sure the default size is 'large' in case user doesn't specify
     missionPatch: (mission, { size } = { size: 'LARGE' }) => {
       return size === 'SMALL' ? mission.missionPatchSmall : mission.missionPatchLarge;
-    }
+    },
   },
   User: {
     trips: async (_, __, { dataSources }) => {
@@ -90,9 +90,9 @@ module.exports = {
       // look up those launches by their ids
       return (
         dataSources.launchAPI.getLaunchesByIds({
-          launchIds
+          launchIds,
         }) || []
       );
-    }
-  }
+    },
+  },
 };

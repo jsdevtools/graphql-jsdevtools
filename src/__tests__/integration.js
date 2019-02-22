@@ -79,7 +79,7 @@ describe('Queries', () => {
     // instances, so we can overwrite the underlying fetchers
     // const { server, launchAPI, userAPI } = constructTestServer({
     const { server, launchAPI, pgDB } = constructTestServer({
-      context: () => ({ user: { id: 1, email: 'a@a.a' } })
+      context: () => ({ user: { id: 1, email: 'a@a.a' } }),
     });
 
     // mock the datasources' underlying fetch methods, whether that's a REST
@@ -101,7 +101,7 @@ describe('Queries', () => {
   it('fetches single launch', async () => {
     // const { server, launchAPI, userAPI } = constructTestServer({
     const { server, launchAPI, pgDB } = constructTestServer({
-      context: () => ({ user: { id: 1, email: 'a@a.a' } })
+      context: () => ({ user: { id: 1, email: 'a@a.a' } }),
     });
 
     launchAPI.get = jest.fn(() => [mockLaunchResponse]);
@@ -120,7 +120,7 @@ describe('Mutations', () => {
   it('returns login token', async () => {
     // eslint-disable-next-line no-unused-vars
     const { server, launchAPI, userAPI, pgDB } = constructTestServer({
-      context: () => {}
+      context: () => {},
     });
 
     // userAPI.store = mockStore;
@@ -131,7 +131,7 @@ describe('Mutations', () => {
     const { mutate } = createTestClient(server);
     const res = await mutate({
       mutation: LOGIN,
-      variables: { email: 'a@a.a' }
+      variables: { email: 'a@a.a' },
     });
     expect(res.data.login).toEqual('YUBhLmE=');
   });
@@ -139,7 +139,7 @@ describe('Mutations', () => {
   it('books trips', async () => {
     // const { server, launchAPI, userAPI } = constructTestServer({
     const { server, launchAPI, pgDB } = constructTestServer({
-      context: () => ({ user: { id: 1, email: 'a@a.a' } })
+      context: () => ({ user: { id: 1, email: 'a@a.a' } }),
     });
 
     // mock the underlying fetches
@@ -167,7 +167,7 @@ describe('Mutations', () => {
     const { mutate } = createTestClient(server);
     const res = await mutate({
       mutation: BOOK_TRIPS,
-      variables: { launchIds: ['1', '2'] }
+      variables: { launchIds: ['1', '2'] },
     });
     expect(res).toMatchSnapshot();
   });

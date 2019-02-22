@@ -5,19 +5,19 @@ const mockContext = {
     userAPI: {
       bookTrips: jest.fn(),
       cancelTrip: jest.fn(),
-      findOrCreateUser: jest.fn()
+      findOrCreateUser: jest.fn(),
     },
     launchAPI: {
       getLaunchesByIds: jest.fn(),
-      getLaunchById: jest.fn()
+      getLaunchById: jest.fn(),
     },
     pgDB: {
       bookTrips: jest.fn(),
       cancelTrip: jest.fn(),
-      findOrCreateUser: jest.fn()
-    }
+      findOrCreateUser: jest.fn(),
+    },
   },
-  user: { id: 1, email: 'a@a.a' }
+  user: { id: 1, email: 'a@a.a' },
 };
 
 describe('[Mutation.bookTrips]', () => {
@@ -34,7 +34,7 @@ describe('[Mutation.bookTrips]', () => {
     expect(res).toEqual({
       launches: [{ cursor: 'foo', id: 999 }],
       message: 'trips booked successfully',
-      success: true
+      success: true,
     });
 
     // check if the dataSource was called with correct args
@@ -66,7 +66,7 @@ describe('[Mutation.cancelTrip]', () => {
     expect(res).toEqual({
       success: true,
       message: 'trip cancelled',
-      launches: [{ id: 999, cursor: 'foo' }]
+      launches: [{ id: 999, cursor: 'foo' }],
     });
 
     // check if the dataSource was called with correct args
@@ -90,7 +90,7 @@ describe('[Mutation.login]', () => {
   it('returns base64 encoded email if successful', async () => {
     const args = { email: 'a@a.a' };
     findOrCreateUser.mockReturnValueOnce(true);
-    const base64Email = Buffer.from(mockContext.user.email).toString('base64');
+    // const base64Email = Buffer.from(mockContext.user.email).toString('base64');
 
     // check the resolver response
     const res = await resolvers.Mutation.login(null, args, mockContext);

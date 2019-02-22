@@ -3,7 +3,7 @@ const resolvers = require('../resolvers');
 const mockMission = {
   name: 'foo',
   missionPatchLarge: 'LG',
-  missionPatchSmall: 'SM'
+  missionPatchSmall: 'SM',
 };
 
 describe('[Mission.missionPatch]', () => {

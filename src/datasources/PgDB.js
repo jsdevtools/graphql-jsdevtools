@@ -14,7 +14,7 @@ const createKnex = ({ connectionString }) =>
   Knex({
     client: 'pg',
     connection: connectionString,
-    searchPath: ['public']
+    searchPath: ['public'],
   });
 
 class PgDB extends SQLDataSource {
@@ -57,7 +57,7 @@ class PgDB extends SQLDataSource {
               table.increments('id');
               table.string('email').unique();
               table.string('token');
-            })
+            }),
         },
         trips: {
           findOrCreate: async ({ userId, launchId }) =>
@@ -95,8 +95,8 @@ class PgDB extends SQLDataSource {
               trips.integer('launchId');
               trips.integer('userId');
               trips.primary(['launchId', 'userId']);
-            })
-        }
+            }),
+        },
       };
     }
   }
@@ -189,13 +189,13 @@ class PgDB extends SQLDataSource {
   }
 
   async bookTrips({ launchIds }) {
-    const retVals = [];
-
-    const results = launchIds.map(launchId => this.bookTrip({ launchId }));
-    await Promise.all(results).then(asyncResults =>
-      asyncResults.map(asyncResult => retVals.push(asyncResult.id))
+    return Promise.all(launchIds.map(async launchId => this.bookTrip({ launchId }))).then(completed =>
+      completed
+        .filter(res => {
+          return !!res;
+        })
+        .map(res => res.id)
     );
-    return retVals;
   }
 
   async bookTrip({ launchId }) {
@@ -235,6 +235,6 @@ module.exports = (() => {
       }
       return instance[JSON.stringify(config)];
     },
-    destroy: () => Object.keys(instance).forEach(i => instance[i].knex.destroy())
+    destroy: () => Object.keys(instance).forEach(i => instance[i].knex.destroy()),
   };
 })();
