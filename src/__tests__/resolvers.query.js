@@ -131,7 +131,6 @@ describe('[Query.launch]', () => {
 describe('[Query.me]', () => {
   const mockContext = {
     dataSources: {
-      userAPI: { findOrCreateUser: jest.fn() },
       pgDB: { findOrCreateUser: jest.fn() },
     },
     user: {},
@@ -141,11 +140,10 @@ describe('[Query.me]', () => {
     expect(await resolvers.Query.me(null, null, mockContext)).toBeFalsy();
   });
 
-  it('returns user from userAPI', async () => {
+  it('returns user from PgDB API', async () => {
     mockContext.user.email = 'a@a.a';
     // eslint-disable-next-line prefer-destructuring
     const findOrCreateUser = mockContext.dataSources.pgDB.findOrCreateUser;
-    // const findOrCreateUser = mockContext.dataSources.userAPI.findOrCreateUser;
     findOrCreateUser.mockReturnValueOnce({ id: 999 });
 
     // check return value of resolver

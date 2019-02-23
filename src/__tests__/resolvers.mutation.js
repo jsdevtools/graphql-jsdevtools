@@ -2,11 +2,6 @@ const resolvers = require('../resolvers');
 
 const mockContext = {
   dataSources: {
-    userAPI: {
-      bookTrips: jest.fn(),
-      cancelTrip: jest.fn(),
-      findOrCreateUser: jest.fn(),
-    },
     launchAPI: {
       getLaunchesByIds: jest.fn(),
       getLaunchById: jest.fn(),
@@ -21,7 +16,6 @@ const mockContext = {
 };
 
 describe('[Mutation.bookTrips]', () => {
-  // const { bookTrips } = mockContext.dataSources.userAPI;
   const { bookTrips } = mockContext.dataSources.pgDB;
   const { getLaunchesByIds } = mockContext.dataSources.launchAPI;
 
@@ -53,7 +47,6 @@ describe('[Mutation.bookTrips]', () => {
 });
 
 describe('[Mutation.cancelTrip]', () => {
-  // const { cancelTrip } = mockContext.dataSources.userAPI;
   const { cancelTrip } = mockContext.dataSources.pgDB;
   const { getLaunchById } = mockContext.dataSources.launchAPI;
 
@@ -84,7 +77,6 @@ describe('[Mutation.cancelTrip]', () => {
 });
 
 describe('[Mutation.login]', () => {
-  // const { findOrCreateUser } = mockContext.dataSources.userAPI;
   const { findOrCreateUser } = mockContext.dataSources.pgDB;
 
   it('returns base64 encoded email if successful', async () => {

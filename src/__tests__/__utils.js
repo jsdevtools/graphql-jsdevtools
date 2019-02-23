@@ -12,26 +12,23 @@ const {
   resolvers,
   ApolloServer,
   LaunchAPI,
-  UserAPI,
-  store,
 } = require('../');
 
 /**
  * Integration testing utils
  */
 const constructTestServer = ({ context = defaultContext } = {}) => {
-  const userAPI = new UserAPI({ store });
   const launchAPI = new LaunchAPI();
   const pgDB = PgDB.getInstance();
 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    dataSources: () => ({ userAPI, launchAPI, pgDB }),
+    dataSources: () => ({ launchAPI, pgDB }),
     context,
   });
 
-  return { server, userAPI, launchAPI, pgDB };
+  return { server, launchAPI, pgDB };
 };
 
 module.exports.constructTestServer = constructTestServer;

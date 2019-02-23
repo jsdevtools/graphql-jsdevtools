@@ -8,6 +8,11 @@ if (!process.env.DATABASE_URL.match(/127.0.0.1/)) {
   pg.defaults.ssl = true;
 }
 
+const logger = async (msg, value) => {
+  console.log(msg, value);
+  return value;
+};
+
 // const MINUTE = 60 * 1000;
 
 const createKnex = ({ connectionString }) =>
@@ -177,29 +182,42 @@ class PgDB extends SQLDataSource {
   }
 
   async findOrCreateTrip({ userId, launchId }) {
+    console.log(`PgDb:findOrCreateTrip called w/ userId=${userId} and launchId=${launchId}`);
     try {
       const trip = await this.store.trips.findAll({ where: { userId, launchId } });
+      console.log('PgDb:findOrCreateTrip:trip', trip);
       if (trip && trip.length) {
         return trip[0];
       }
-      return (await this.store.trips.findOrCreate({ where: { userId, launchId } }))[0];
+      return logger(
+        'PgDb:findOrCreateTrip returning',
+        await this.store.trips.findOrCreate({ userId, launchId })
+      );
     } catch (err) {
+      console.log('err\n', err);
       return null;
     }
   }
 
   async bookTrips({ launchIds }) {
-    return Promise.all(launchIds.map(async launchId => this.bookTrip({ launchId }))).then(completed =>
-      completed
-        .filter(res => {
-          return !!res;
-        })
-        .map(res => res.id)
+    console.log(`called PgDB:bookTrips w/ launchIds=${launchIds}`);
+    return logger(
+      'PgDb:bookTrips returning',
+      await Promise.all(launchIds.map(async launchId => this.bookTrip({ launchId }))).then(completed =>
+        completed
+          .filter(res => {
+            return !!res;
+          })
+          .map(res => res.id)
+      )
     );
   }
 
   async bookTrip({ launchId }) {
-    return this.findOrCreateTrip({ userId: this.context.user.id, launchId });
+    console.log(`PgDb:bookTrip called w/ launchId=${launchId}`);
+    console.log('userId', this.context.user.id);
+    const retVal = await this.findOrCreateTrip({ userId: this.context.user.id, launchId });
+    return logger('PgDb:bookTrip returning', Array.isArray(retVal) ? retVal[0] : retVal);
   }
 
   async cancelTrip({ userId, launchId }) {

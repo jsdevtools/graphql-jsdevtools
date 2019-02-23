@@ -5,20 +5,14 @@ const isEmail = require('isemail');
 
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const { createStore } = require('./utils');
 
 const LaunchAPI = require('./datasources/launch');
-const UserAPI = require('./datasources/user');
 const PgDB = require('./datasources/PgDB');
-
-// creates a sequelize connection once. NOT for every request
-const store = createStore();
 
 // set up any dataSources our resolvers need
 const dataSources = () => {
   const retVal = {
     launchAPI: new LaunchAPI(),
-    userAPI: new UserAPI({ store }),
     pgDB: PgDB.getInstance(),
   };
   return retVal;
@@ -33,9 +27,8 @@ const context = async ({ req }) => {
   // if the email isn't formatted validly, return null for user
   if (!isEmail.validate(email)) return { user: null };
   // find a user by their email
-  const users = await store.users.findOrCreate({ where: { email } });
+  const users = await PgDB.getInstance().findOrCreateUser({ where: { email } });
   const user = users && users[0] ? users[0] : null;
-
   return { user: { ...user.dataValues } };
 };
 
@@ -76,7 +69,5 @@ module.exports = {
   resolvers,
   ApolloServer,
   LaunchAPI,
-  UserAPI,
-  store,
   server,
 };

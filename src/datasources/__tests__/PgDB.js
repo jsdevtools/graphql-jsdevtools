@@ -179,7 +179,7 @@ describe('[PgDB.bookTrip]', () => {
 
     const res = await pg.bookTrip({ launchId: 1 });
     expect(mockStore.trips.findAll).toBeCalledWith({ where: { launchId: 1, userId: 1 } });
-    expect(mockStore.trips.findOrCreate).toBeCalledWith({ where: { launchId: 1, userId: 1 } });
+    expect(mockStore.trips.findOrCreate).toBeCalledWith({ launchId: 1, userId: 1 });
     expect(res).toEqual({ id: 1 });
   });
 
@@ -228,8 +228,8 @@ describe('[PgDB.bookTrips]', () => {
     mockStore.trips.findOrCreate.mockReturnValueOnce([{ id: 2 }]);
 
     const res = await pg.bookTrips({ launchIds: [3, 4] });
-    expect(mockStore.trips.findOrCreate).toBeCalledWith({ where: { launchId: 3, userId: 1 } });
-    expect(mockStore.trips.findOrCreate).toBeCalledWith({ where: { launchId: 4, userId: 1 } });
+    expect(mockStore.trips.findOrCreate).toBeCalledWith({ launchId: 3, userId: 1 });
+    expect(mockStore.trips.findOrCreate).toBeCalledWith({ launchId: 4, userId: 1 });
     expect(res).toEqual([1, 2]);
   });
 });

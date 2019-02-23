@@ -209,7 +209,7 @@ describe('Server - e2e, invalid auth', () => {
 
   beforeEach(async () => {
     const testServer = await startTestServer(server, {
-      authorization: 'Zm9vQGJhci5jb20=',
+      authorization: 'bm90IGEgdmFsaWQgZW1haWw=',
       'client-name': 'JestTestingClient',
       'client-version': '0.0.1',
     });
