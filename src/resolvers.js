@@ -3,9 +3,8 @@ const { paginateResults } = require('./utils');
 module.exports = {
   Query: {
     launches: async (_, { pageSize = 20, after }, { dataSources }) => {
-      console.log('got to launches');
       const allLaunches = await dataSources.launchAPI.getAllLaunches();
-      console.log('launches', pageSize, after, allLaunches);
+
       // we want these in reverse chronological order
       allLaunches.reverse();
 
@@ -14,7 +13,7 @@ module.exports = {
         pageSize,
         results: allLaunches,
       });
-      console.log('launches2', launches);
+
       return {
         launches,
         cursor: launches.length ? launches[launches.length - 1].cursor : null,
@@ -26,17 +25,17 @@ module.exports = {
       };
     },
     launch: (_, { id }, { dataSources }) => dataSources.launchAPI.getLaunchById({ launchId: id }),
-    me: async (_, __, { dataSources }) => dataSources.pgDB.findOrCreateUser(),
+    me: async (_, __, { dataSources }) => {
+      const res = await dataSources.pgDB.findOrCreateUser();
+      return res;
+    },
   },
   Mutation: {
     bookTrips: async (_, { launchIds }, { dataSources }) => {
-      console.log('launchIds', launchIds);
       const results = await dataSources.pgDB.bookTrips({ launchIds });
-      console.log('results', results);
       const launches = await dataSources.launchAPI.getLaunchesByIds({
         launchIds,
       });
-      console.log('launches', launches);
 
       return {
         success: results && results.length === launchIds.length,
@@ -48,8 +47,7 @@ module.exports = {
       };
     },
     cancelTrip: async (_, { launchId }, { dataSources }) => {
-      const result = dataSources.pgDB.cancelTrip({ launchId });
-
+      const result = await dataSources.pgDB.cancelTrip({ launchId });
       if (!result)
         return {
           success: false,
@@ -64,7 +62,7 @@ module.exports = {
       };
     },
     login: async (_, { email }, { dataSources }) => {
-      const user = await dataSources.pgDB.findOrCreateUser({ email });
+      const user = await dataSources.pgDB.findOrCreateUser({ where: { email } });
       if (user) return Buffer.from(email).toString('base64');
       return null;
     },
@@ -83,7 +81,6 @@ module.exports = {
     trips: async (_, __, { dataSources }) => {
       // get ids of launches by user
       const launchIds = await dataSources.pgDB.getLaunchIdsByUser();
-
       if (!launchIds.length) return [];
 
       // look up those launches by their ids

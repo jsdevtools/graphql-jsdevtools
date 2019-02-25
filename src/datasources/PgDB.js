@@ -8,11 +8,6 @@ if (!process.env.DATABASE_URL.match(/127.0.0.1/)) {
   pg.defaults.ssl = true;
 }
 
-const logger = async (msg, value) => {
-  console.log(msg, value);
-  return value;
-};
-
 // const MINUTE = 60 * 1000;
 
 const createKnex = ({ connectionString }) =>
@@ -71,7 +66,7 @@ class PgDB extends SQLDataSource {
               .insert({ userId, launchId })
               .into('trips')
               .returning(['userId', 'launchId']),
-          destroy: async (where = {}) =>
+          destroy: async ({ where } = { where: {} }) =>
             this.knex
               .withSchema('public')
               .del()
@@ -167,8 +162,15 @@ class PgDB extends SQLDataSource {
    * have to be. If the user is already on the context, it will use that user
    * instead
    */
-  async findOrCreateUser({ email: emailArg } = {}) {
-    const email = this.context && this.context.user ? this.context.user.email : emailArg;
+  async findOrCreateUser({ where } = {}) {
+    let email = '';
+    if (this.context && this.context.user) {
+      // eslint-disable-next-line prefer-destructuring
+      email = this.context.user.email;
+    } else if (where && where.email) {
+      // eslint-disable-next-line prefer-destructuring
+      email = where.email;
+    }
     if (!email || !isEmail.validate(email)) return null;
     try {
       const user = await this.store.users.findAll({ where: { email } });
@@ -182,42 +184,31 @@ class PgDB extends SQLDataSource {
   }
 
   async findOrCreateTrip({ userId, launchId }) {
-    console.log(`PgDb:findOrCreateTrip called w/ userId=${userId} and launchId=${launchId}`);
     try {
       const trip = await this.store.trips.findAll({ where: { userId, launchId } });
-      console.log('PgDb:findOrCreateTrip:trip', trip);
       if (trip && trip.length) {
         return trip[0];
       }
-      return logger(
-        'PgDb:findOrCreateTrip returning',
-        await this.store.trips.findOrCreate({ userId, launchId })
-      );
+      return await this.store.trips.findOrCreate({ userId, launchId });
     } catch (err) {
-      console.log('err\n', err);
       return null;
     }
   }
 
   async bookTrips({ launchIds }) {
-    console.log(`called PgDB:bookTrips w/ launchIds=${launchIds}`);
-    return logger(
-      'PgDb:bookTrips returning',
-      await Promise.all(launchIds.map(async launchId => this.bookTrip({ launchId }))).then(completed =>
-        completed
-          .filter(res => {
-            return !!res;
-          })
-          .map(res => res.id)
-      )
+    return Promise.all(launchIds.map(async launchId => this.bookTrip({ launchId }))).then(completed =>
+      completed
+        .filter(res => {
+          return !!res;
+        })
+        .map(res => res.id)
     );
   }
 
   async bookTrip({ launchId }) {
-    console.log(`PgDb:bookTrip called w/ launchId=${launchId}`);
-    console.log('userId', this.context.user.id);
+    if (!this.context || !this.context.user || !this.context.user.id) return null;
     const retVal = await this.findOrCreateTrip({ userId: this.context.user.id, launchId });
-    return logger('PgDb:bookTrip returning', Array.isArray(retVal) ? retVal[0] : retVal);
+    return Array.isArray(retVal) ? retVal[0] : retVal;
   }
 
   async cancelTrip({ userId, launchId }) {
@@ -233,7 +224,7 @@ class PgDB extends SQLDataSource {
   async getLaunchIdsByUser() {
     if (!this.context || !this.context.user) return [];
     const trips = await this.store.trips.findAll({ where: { userId: this.context.user.id } });
-    return trips.map(trip => trip.id);
+    return trips.map(trip => trip.launchId);
   }
 
   async isBookedOnLaunch({ launchId }) {
@@ -245,7 +236,6 @@ class PgDB extends SQLDataSource {
 
 module.exports = (() => {
   const instance = {};
-
   return {
     getInstance: (config = { connectionString: process.env.DATABASE_URL }) => {
       if (!instance[JSON.stringify(config)]) {

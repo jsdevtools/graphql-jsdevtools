@@ -89,7 +89,7 @@ describe('[Mutation.login]', () => {
     expect(res).toEqual('YUBhLmE=');
 
     // check if the dataSource was called with correct args
-    expect(findOrCreateUser).toBeCalledWith(args);
+    expect(findOrCreateUser).toBeCalledWith({ where: args });
   });
 
   it('returns nothing if login fails', async () => {

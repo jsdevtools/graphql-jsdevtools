@@ -96,7 +96,7 @@ describe('[PgDB.init]', () => {
 
 describe('[PgDB.findOrCreateUser]', () => {
   it('returns null for invalid emails', async () => {
-    const res = await pg.findOrCreateUser({ email: 'boo!' });
+    const res = await pg.findOrCreateUser({ where: { email: 'boo!' } });
     expect(res).toEqual(null);
   });
 
@@ -105,7 +105,7 @@ describe('[PgDB.findOrCreateUser]', () => {
 
     mockStore.users.findAll.mockReturnValueOnce([{ id: 1 }]);
 
-    const res = await pg.findOrCreateUser(args);
+    const res = await pg.findOrCreateUser({ where: args });
     expect(mockStore.users.findAll).toBeCalledWith({ where: args });
     expect(res).toEqual({ id: 1 });
   });
@@ -116,7 +116,7 @@ describe('[PgDB.findOrCreateUser]', () => {
     mockStore.users.findAll.mockReturnValueOnce([]);
     mockStore.users.findOrCreate.mockReturnValueOnce([{ id: 1 }]);
 
-    const res = await pg.findOrCreateUser(args);
+    const res = await pg.findOrCreateUser({ where: args });
     expect(mockStore.users.findAll).toBeCalledWith({ where: args });
     expect(mockStore.users.findOrCreate).toBeCalledWith({ where: args });
     expect(res).toEqual({ id: 1 });
@@ -152,7 +152,7 @@ describe('[PgDB.findOrCreateUser]', () => {
       throw new Error('Error during find user');
     });
 
-    const res = await pg.findOrCreateUser(args);
+    const res = await pg.findOrCreateUser({ where: args });
     expect(res).toEqual(null);
   });
 
@@ -164,7 +164,7 @@ describe('[PgDB.findOrCreateUser]', () => {
       throw new Error('Error during create user');
     });
 
-    const res = await pg.findOrCreateUser(args);
+    const res = await pg.findOrCreateUser({ where: args });
     expect(mockStore.users.findAll).toBeCalledWith({ where: args });
     expect(res).toEqual(null);
   });

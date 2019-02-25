@@ -142,19 +142,19 @@ describe('DB Initialization', () => {
   });
 
   it('PgDB.trips destroy', async () => {
-    const res = await PgDB.getInstance().store.trips.destroy({ userId: 2 });
+    const res = await PgDB.getInstance().store.trips.destroy({ where: { userId: 2 } });
 
     expect(res).toEqual(1);
   });
 
   it('PgDB.trips destroy2', async () => {
-    const res = await PgDB.getInstance().store.trips.destroy({ launchId: 1, userId: 2 });
+    const res = await PgDB.getInstance().store.trips.destroy({ where: { launchId: 1, userId: 2 } });
 
     expect(res).toEqual(0);
   });
 
   it('PgDB.trips destroy3', async () => {
-    expect(PgDB.getInstance().store.trips.destroy({ blah: 1 })).rejects.toThrow(
+    expect(PgDB.getInstance().store.trips.destroy({ where: { blah: 1 } })).rejects.toThrow(
       /column "blah" does not exist/
     );
   });
