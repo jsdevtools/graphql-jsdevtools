@@ -1,0 +1,84 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-450202:
+    - apollo > apollo-codegen-core > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - knex > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - eslint-plugin-import > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - eslint > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - codacy-coverage > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > cli-ux > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > @oclif/plugin-not-found > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - babel-eslint > @babel/traverse > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - eslint > table > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-language-server > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-engine-reporting > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > heroku-cli-util > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - eslint > inquirer > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-core > apollo-language-server > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - babel-eslint > @babel/traverse > @babel/generator > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > @oclif/plugin-plugins > cli-ux > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-typescript > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - sequelize > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-engine-reporting > apollo-server-core > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > gaze > globule > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-flow > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - codacy-coverage > request-promise > request-promise-core > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-swift > apollo-codegen-core > @babel/generator > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-flow > apollo-codegen-core > apollo-language-server > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-scala > apollo-codegen-core > apollo-language-server > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-swift > apollo-codegen-core > apollo-language-server > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-typescript > apollo-codegen-core > apollo-language-server > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-flow > apollo-codegen-core > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-scala > apollo-codegen-core > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-typescript > apollo-codegen-core > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-core > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - babel-eslint > @babel/traverse > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-flow > apollo-codegen-core > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-swift > apollo-codegen-core > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - babel-eslint > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-typescript > apollo-codegen-core > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
+    - apollo > apollo-codegen-scala > apollo-codegen-core > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-03T21:29:57.010Z'
