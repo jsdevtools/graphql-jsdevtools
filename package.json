@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest --coverage",
     "start": "nodemon src/index.js",
-    "start:ci": "node src/index.js"
+    "start:ci": "node src/index.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "",
   "license": "ISC",
@@ -40,7 +42,8 @@
     "pg": "^7.8.0",
     "prettier": "^1.16.4",
     "sequelize": "^4.39.0",
-    "sqlite3": "^4.0.3"
+    "sqlite3": "^4.0.3",
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "fs": "0.0.2",
@@ -57,5 +60,6 @@
     ],
     "globalSetup": "./jest-setup.js",
     "globalTeardown": "./jest-teardown.js"
-  }
+  },
+  "snyk": true
 }
