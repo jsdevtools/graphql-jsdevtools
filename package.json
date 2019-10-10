@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "apollo": "^2.5.1",
-    "apollo-datasource": "^0.3.1",
+    "apollo-datasource": "^0.6.3",
     "apollo-datasource-rest": "^0.6.5",
     "apollo-link": "^1.2.3",
     "apollo-link-http": "^1.5.5",
