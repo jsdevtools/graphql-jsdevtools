@@ -23,7 +23,7 @@
     "codecov": "^3.2.0",
     "coveralls": "^3.0.2",
     "datasource-sql": "^0.1.4",
-    "dotenv": "^6.2.0",
+    "dotenv": "^8.2.0",
     "eslint": "^5.14.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.0.0",
