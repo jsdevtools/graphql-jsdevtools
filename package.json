@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "apollo": "^2.5.1",
+    "apollo": "^2.33.11",
     "apollo-datasource": "^0.3.1",
     "apollo-datasource-rest": "^0.3.1",
     "apollo-link": "^1.2.3",
